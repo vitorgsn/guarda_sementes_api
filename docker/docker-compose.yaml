@@ -1,0 +1,19 @@
+services:
+  postgres-compose:
+    image: postgres
+    container_name: guardasementes_db
+    environment:
+      POSTGRES_USER: "guardasementes"
+      POSTGRES_PASSWORD: "guardasementes"
+      POSTGRES_DB: "guardasementes_db"
+      PGDATA: /data/guardasementes_db
+    ports:
+      - "55432:5432"
+    volumes:
+      - C:/docker/bind-mount/guardasementes_db:/data/guardasementes_db
+    networks:
+      - postgres-compose-network-guardasementes_db
+
+networks:
+  postgres-compose-network-guardasementes_db:
+    driver: bridge
