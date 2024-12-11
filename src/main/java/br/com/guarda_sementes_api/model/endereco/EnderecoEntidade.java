@@ -1,13 +1,13 @@
 package br.com.guarda_sementes_api.model.endereco;
 
-import br.com.guarda_sementes_api.model.cidade.CidadeEntidade;
-import br.com.guarda_sementes_api.model.usuario.UsuarioEntidade;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.proxy.HibernateProxy;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @ToString
 @Entity
@@ -24,31 +24,42 @@ public class EnderecoEntidade {
     @Column(name = "end_nr_id")
     private Long endNrId;
 
-    @Column(name = "end_tx_bairro", nullable = false, length = 100)
+    @Column(name = "end_tx_bairro")
     private String endTxBairro;
 
-    @Column(name = "end_tx_logradouro", nullable = false, length = 200)
+    @Column(name = "end_tx_logradouro")
     private String endTxLogradouro;
 
-    @Column(name = "end_tx_numero", nullable = false, length = 100)
+    @Column(name = "end_tx_numero")
     private String endTxNumero;
 
-    @Column(name = "end_tx_referencia", nullable = false, length = 200)
+    @Column(name = "end_tx_referencia")
     private String endTxReferencia;
 
     @CreationTimestamp
-    @Column(name = "end_dt_created_at", nullable = false, updatable = false)
+    @Column(name = "end_dt_created_at")
     private LocalDateTime endDtCreatedAt;
 
     @UpdateTimestamp
     @Column(name = "end_dt_updated_at")
     private LocalDateTime endDtUpdateAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "usu_nr_id", nullable = false, referencedColumnName = "usu_nr_id")
-    private UsuarioEntidade usuNrId;
+    @Column(name = "cid_nr_id")
+    private Long cidNrId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cid_nr_id", nullable = false, referencedColumnName = "cid_nr_id")
-    private CidadeEntidade cidNrId;
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
+        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
+        if (thisEffectiveClass != oEffectiveClass) return false;
+        EnderecoEntidade that = (EnderecoEntidade) o;
+        return getEndNrId() != null && Objects.equals(getEndNrId(), that.getEndNrId());
+    }
+
+    @Override
+    public final int hashCode() {
+        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+    }
 }

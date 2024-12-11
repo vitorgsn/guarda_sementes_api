@@ -1,13 +1,11 @@
-package br.com.guarda_sementes_api.model.semente;
+package br.com.guarda_sementes_api.model.contato;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.UUID;
 
 @ToString
 @Entity
@@ -16,33 +14,19 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "sem_semente")
-public class SementeEntidade {
+@Table(name = "cou_contato_usuario")
+public class ContatoUsuarioRelacionamento {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "sem_nr_id")
-    private Long semNrId;
+    @Column(name = "cou_nr_id")
+    private Long couNrId;
 
-    @Column(name = "sem_tx_nome")
-    private String semTxNome;
+    @Column(name = "usu_nr_id")
+    private UUID usuNrId;
 
-    @Column(name = "sem_nr_quantidade")
-    private Float semNrQuantidade;
-
-    @Column(name = "sem_tx_descricao")
-    private String semTxDescricao;
-
-    @CreationTimestamp
-    @Column(name = "sem_dt_created_at")
-    private LocalDateTime semDtCreatedAt;
-
-    @UpdateTimestamp
-    @Column(name = "sem_dt_updated_at")
-    private LocalDateTime semDtUpdateAt;
-
-    @Column(name = "arm_nr_id")
-    private Long armNrId;
+    @Column(name = "con_nr_id")
+    private Long conNrId;
 
     @Override
     public final boolean equals(Object o) {
@@ -51,8 +35,8 @@ public class SementeEntidade {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        SementeEntidade that = (SementeEntidade) o;
-        return getSemNrId() != null && Objects.equals(getSemNrId(), that.getSemNrId());
+        ContatoUsuarioRelacionamento that = (ContatoUsuarioRelacionamento) o;
+        return getCouNrId() != null && Objects.equals(getCouNrId(), that.getCouNrId());
     }
 
     @Override

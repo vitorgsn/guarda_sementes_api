@@ -1,12 +1,13 @@
 package br.com.guarda_sementes_api.model.cidade;
 
-import br.com.guarda_sementes_api.model.estado.EstadoEntidade;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.proxy.HibernateProxy;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @ToString
 @Entity
@@ -23,18 +24,33 @@ public class CidadeEntidade {
     @Column(name = "cid_nr_id")
     private Long cidNrId;
 
-    @Column(name = "cid_tx_nome", nullable = false, length = 100)
+    @Column(name = "cid_tx_nome")
     private String cidTxNome;
 
     @CreationTimestamp
-    @Column(name = "cid_dt_created_at", nullable = false, updatable = false)
+    @Column(name = "cid_dt_created_at")
     private LocalDateTime cidDtCreatedAt;
 
     @UpdateTimestamp
     @Column(name = "cid_dt_updated_at")
     private LocalDateTime cidDtUpdateAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "est_nr_id", nullable = false, referencedColumnName = "est_nr_id")
-    private EstadoEntidade estNrId;
+    @Column(name = "est_nr_id")
+    private Long estNrId;
+
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
+        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
+        if (thisEffectiveClass != oEffectiveClass) return false;
+        CidadeEntidade that = (CidadeEntidade) o;
+        return getCidNrId() != null && Objects.equals(getCidNrId(), that.getCidNrId());
+    }
+
+    @Override
+    public final int hashCode() {
+        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+    }
 }
