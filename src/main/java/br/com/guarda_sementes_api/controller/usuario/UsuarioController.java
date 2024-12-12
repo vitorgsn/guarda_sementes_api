@@ -26,7 +26,7 @@ public class UsuarioController {
 
     @PostMapping("/autenticar")
     @ResponseStatus(code = HttpStatus.OK)
-    public ResponseEntity autenticar(@RequestBody @Valid AutenticacaoForm form) {
+    public ResponseEntity<AutenticacaoDto> autenticar(@RequestBody @Valid AutenticacaoForm form) {
 
         var usernamePassword = new UsernamePasswordAuthenticationToken(form.login(), form.senha());
         var auth = this.authenticationManager.authenticate(usernamePassword);

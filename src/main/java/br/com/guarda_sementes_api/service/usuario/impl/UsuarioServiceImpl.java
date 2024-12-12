@@ -2,13 +2,11 @@ package br.com.guarda_sementes_api.service.usuario.impl;
 
 import br.com.guarda_sementes_api.model.usuario.PerfilUsuarioRelacionamento;
 import br.com.guarda_sementes_api.model.usuario.UsuarioEntidade;
-import br.com.guarda_sementes_api.repository.usuario.PerfilRepository;
 import br.com.guarda_sementes_api.repository.usuario.PerfilUsuarioRelacionamentoRepository;
 import br.com.guarda_sementes_api.repository.usuario.UsuarioRepository;
 import br.com.guarda_sementes_api.service.usuario.dto.UsuarioDto;
 import br.com.guarda_sementes_api.service.usuario.form.UsuarioForm;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
