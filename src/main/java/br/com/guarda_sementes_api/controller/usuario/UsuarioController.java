@@ -15,6 +15,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/usuarios")
 @RequiredArgsConstructor
@@ -44,5 +46,11 @@ public class UsuarioController {
     @ResponseStatus(code = HttpStatus.CREATED)
     public UsuarioDto registrar(@RequestBody @Valid UsuarioForm form) {
         return this.usuarioServiceImpl.cadastrarOuAtualizarUsuario(null, form);
+    }
+
+    @PostMapping("/{usuNrId}/inativar")
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
+    public void registrar(@PathVariable @Valid UUID usuNrId) {
+        this.usuarioServiceImpl.inativarOuAtivarUsuario(usuNrId);
     }
 }

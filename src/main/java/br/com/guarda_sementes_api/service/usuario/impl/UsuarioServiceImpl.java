@@ -56,4 +56,13 @@ public class UsuarioServiceImpl implements UserDetailsService {
 
         this.perfilUsuarioRelacionamentoRepository.save(perfilUsuarioRelacionamento);
     }
+
+    public void inativarOuAtivarUsuario(UUID usuNrId) {
+        var usuario = this.usuarioRepository.buscarUsuarioPorId(usuNrId)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
+
+        usuario.setUsuBlAtivo(!usuario.isUsuBlAtivo());
+
+        this.usuarioRepository.save(usuario);
+    }
 }

@@ -37,6 +37,10 @@ public class ContatoEntidade {
     @Column(name = "con_dt_updated_at")
     private LocalDateTime conDtUpdateAt;
 
+    @Column(name = "con_bl_ativo")
+    @Builder.Default
+    private Boolean conBlAtivo = true;
+
     @Override
     public final boolean equals(Object o) {
         if (this == o) return true;

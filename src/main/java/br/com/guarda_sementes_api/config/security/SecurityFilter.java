@@ -1,7 +1,6 @@
 package br.com.guarda_sementes_api.config.security;
 
 import br.com.guarda_sementes_api.repository.usuario.UsuarioRepository;
-import br.com.guarda_sementes_api.service.usuario.impl.UsuarioServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,9 +29,10 @@ public class SecurityFilter extends OncePerRequestFilter {
             var login = this.tokenService.validarToken(token);
             UserDetails usuario = this.usuarioRepository.findByUsuTxLogin(login);
 
-            var authenticaiton = new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
-
-            SecurityContextHolder.getContext().setAuthentication(authenticaiton);
+            if (usuario != null) {
+                var authenticaiton = new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
+                SecurityContextHolder.getContext().setAuthentication(authenticaiton);
+            }
         }
         filterChain.doFilter(request, response);
     }
