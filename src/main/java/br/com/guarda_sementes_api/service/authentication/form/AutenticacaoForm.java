@@ -1,4 +1,4 @@
-package br.com.guarda_sementes_api.service.usuario.form;
+package br.com.guarda_sementes_api.service.authentication.form;
 
 import jakarta.validation.constraints.NotBlank;
 

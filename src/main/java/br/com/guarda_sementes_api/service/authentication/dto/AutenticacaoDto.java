@@ -1,4 +1,4 @@
-package br.com.guarda_sementes_api.service.usuario.dto;
+package br.com.guarda_sementes_api.service.authentication.dto;
 
 import java.util.UUID;
 
