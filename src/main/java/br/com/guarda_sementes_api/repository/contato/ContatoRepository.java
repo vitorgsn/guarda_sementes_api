@@ -14,7 +14,17 @@ import java.util.UUID;
 
 @Repository
 public interface ContatoRepository extends JpaRepository<ContatoEntidade, Long> {
-    Optional<ContatoEntidade> findByConNrId(long conNrId);
+
+    @Query(nativeQuery = true,
+            value = """
+                    select 
+                        * 
+                    from 
+                        con_contato con 
+                    where 
+                        con.con_nr_id = :conNrId and con.con_bl_ativo = true
+                    """)
+    Optional<ContatoEntidade> buscarContatoPorId(long conNrId);
 
     @Query(nativeQuery = true,
             value = """

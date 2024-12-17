@@ -47,6 +47,10 @@ public class EnderecoEntidade {
     @Column(name = "cid_nr_id")
     private Long cidNrId;
 
+    @Column(name = "end_bl_ativo")
+    @Builder.Default
+    private Boolean endBlAtivo = Boolean.TRUE;
+
     @Override
     public final boolean equals(Object o) {
         if (this == o) return true;

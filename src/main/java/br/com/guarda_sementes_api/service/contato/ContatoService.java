@@ -9,4 +9,6 @@ import org.springframework.data.domain.Pageable;
 public interface ContatoService {
     ContatoDto cadastrarOuAtualizarContato(Long conNrId, ContatoForm form);
     Page<ContatoDto> listarContatosDoUsuario(ContatoFiltroForm filtro, Pageable pageable);
+    ContatoDto obterContatoPorId(Long conNrId);
+    void deletarContato(Long conNrId);
 }
