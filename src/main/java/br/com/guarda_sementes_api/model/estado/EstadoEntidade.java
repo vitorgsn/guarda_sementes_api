@@ -38,6 +38,10 @@ public class EstadoEntidade {
     @Column(name = "est_dt_updated_at")
     private LocalDateTime estDtUpdateAt;
 
+    @Column(name = "est_bl_ativo")
+    @Builder.Default
+    private Boolean estBlAtivo = Boolean.TRUE;
+
     @Override
     public final boolean equals(Object o) {
         if (this == o) return true;

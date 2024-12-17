@@ -31,6 +31,12 @@ public class SecurityConfigurations {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/usuarios/registrar").permitAll()
                         .requestMatchers(HttpMethod.POST, "/usuarios/autenticar").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/estados").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/estados/{estNrId}").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/estados/{estNrId}").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/cidades").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/cidades/{cidNrId}").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/cidades/{cidNrId}").hasAuthority("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/hello").hasAuthority("GUARDIAO")
                         .anyRequest().authenticated()
                 )
