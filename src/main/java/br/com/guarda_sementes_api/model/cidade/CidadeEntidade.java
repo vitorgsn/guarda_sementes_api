@@ -38,6 +38,10 @@ public class CidadeEntidade {
     @Column(name = "est_nr_id")
     private Long estNrId;
 
+    @Column(name = "cid_bl_ativo")
+    @Builder.Default
+    private Boolean cidBlAtivo = Boolean.TRUE;
+
     @Override
     public final boolean equals(Object o) {
         if (this == o) return true;

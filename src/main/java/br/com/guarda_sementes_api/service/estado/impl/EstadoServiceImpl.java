@@ -1,5 +1,6 @@
 package br.com.guarda_sementes_api.service.estado.impl;
 
+import br.com.guarda_sementes_api.model.estado.EstadoEntidade;
 import br.com.guarda_sementes_api.repository.estado.EstadoRepository;
 import br.com.guarda_sementes_api.service.estado.EstadoService;
 import br.com.guarda_sementes_api.service.estado.dto.EstadoDto;
@@ -17,22 +18,35 @@ public class EstadoServiceImpl implements EstadoService {
 
 
     @Override
-    public EstadoDto cadastrarOuAtualizarEstado(Long estNrId, EstadoForm estadoForm) {
-        return null;
+    public EstadoDto cadastrarOuAtualizarEstado(Long estNrId, EstadoForm form) {
+
+        var estado = estNrId != null ?
+                this.estadoRepository.buscarEstadoPorId(estNrId)
+                        .orElseThrow(() -> new RuntimeException("Estado não encontrado")
+                        ) : new EstadoEntidade();
+
+        estado.setEstTxSigla(form.estTxSigla());
+        estado.setEstTxNome(form.estTxNome());
+
+        this.estadoRepository.save(estado);
+
+        return new EstadoDto(estado);
     }
 
     @Override
     public Page<EstadoDto> listarEstados(EstadoFiltroForm filtro, Pageable pageable) {
-        return null;
+        return this.estadoRepository.listarEstados(filtro, pageable).map(EstadoDto::new);
     }
 
     @Override
     public EstadoDto obterEstadoPorId(Long estNrId) {
-        return null;
+        var estado = this.estadoRepository.buscarEstadoPorId(estNrId).orElseThrow(() -> new RuntimeException("Estado não encontrado."));
+        return new EstadoDto(estado);
     }
 
     @Override
     public void deletarEstado(Long estNrId) {
-
+        var estado = this.estadoRepository.buscarEstadoPorId(estNrId).orElseThrow(() -> new RuntimeException("Estado não encontrado."));
+        this.estadoRepository.delete(estado);
     }
 }

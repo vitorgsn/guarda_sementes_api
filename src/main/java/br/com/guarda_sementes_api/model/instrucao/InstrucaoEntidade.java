@@ -1,4 +1,4 @@
-package br.com.guarda_sementes_api.model.instruncao;
+package br.com.guarda_sementes_api.model.instrucao;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -16,8 +16,8 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "ins_instruncao")
-public class InstruncaoEntidade {
+@Table(name = "ins_instrucao")
+public class InstrucaoEntidade {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,8 +27,8 @@ public class InstruncaoEntidade {
     @Column(name = "ins_tx_titulo")
     private String insTxTitulo;
 
-    @Column(name = "ins_tx_instruncao")
-    private String insTxInstruncao;
+    @Column(name = "ins_tx_instrucao")
+    private String insTxInstrucao;
 
     @CreationTimestamp
     @Column(name = "ins_dt_created_at")
@@ -38,6 +38,10 @@ public class InstruncaoEntidade {
     @Column(name = "ins_dt_updated_at")
     private LocalDateTime insDtUpdateAt;
 
+    @Column(name = "ins_bl_ativo")
+    @Builder.Default
+    private Boolean insBlAtivo = Boolean.TRUE;
+
     @Override
     public final boolean equals(Object o) {
         if (this == o) return true;
@@ -45,7 +49,7 @@ public class InstruncaoEntidade {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        InstruncaoEntidade that = (InstruncaoEntidade) o;
+        InstrucaoEntidade that = (InstrucaoEntidade) o;
         return getInsNrId() != null && Objects.equals(getInsNrId(), that.getInsNrId());
     }
 
