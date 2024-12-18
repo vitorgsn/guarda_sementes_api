@@ -1,4 +1,4 @@
-package br.com.guarda_sementes_api.controller.usuario;
+package br.com.guarda_sementes_api.controller;
 
 import br.com.guarda_sementes_api.service.authentication.dto.AutenticacaoDto;
 import br.com.guarda_sementes_api.service.usuario.dto.UsuarioDto;

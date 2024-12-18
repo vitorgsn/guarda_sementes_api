@@ -1,4 +1,4 @@
-package br.com.guarda_sementes_api.controller.endereco;
+package br.com.guarda_sementes_api.controller;
 
 import br.com.guarda_sementes_api.service.endereco.EnderecoService;
 import br.com.guarda_sementes_api.service.endereco.dto.EnderecoDto;

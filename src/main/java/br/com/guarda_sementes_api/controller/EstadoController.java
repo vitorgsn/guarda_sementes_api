@@ -1,4 +1,4 @@
-package br.com.guarda_sementes_api.controller.estado;
+package br.com.guarda_sementes_api.controller;
 
 import br.com.guarda_sementes_api.service.estado.EstadoService;
 import br.com.guarda_sementes_api.service.estado.dto.EstadoDto;

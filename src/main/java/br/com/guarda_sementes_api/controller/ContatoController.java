@@ -1,4 +1,4 @@
-package br.com.guarda_sementes_api.controller.contato;
+package br.com.guarda_sementes_api.controller;
 
 import br.com.guarda_sementes_api.service.contato.ContatoService;
 import br.com.guarda_sementes_api.service.contato.dto.ContatoDto;

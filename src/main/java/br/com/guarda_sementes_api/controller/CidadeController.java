@@ -1,4 +1,4 @@
-package br.com.guarda_sementes_api.controller.cidade;
+package br.com.guarda_sementes_api.controller;
 
 import br.com.guarda_sementes_api.service.cidade.CidadeService;
 import br.com.guarda_sementes_api.service.cidade.dto.CidadeDto;
