@@ -37,6 +37,10 @@ public class CategoriaArmazemEntidade {
     @Column(name = "cta_dt_updated_at")
     private LocalDateTime ctaDtUpdateAt;
 
+    @Column(name = "cta_bl_ativo")
+    @Builder.Default
+    private Boolean ctaBlAtivo = Boolean.TRUE;
+
     @Override
     public final boolean equals(Object o) {
         if (this == o) return true;

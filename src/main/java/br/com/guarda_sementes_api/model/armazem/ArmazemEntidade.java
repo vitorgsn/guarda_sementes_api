@@ -38,6 +38,10 @@ public class ArmazemEntidade {
     @Column(name = "cta_nr_id")
     private Long ctaNrId;
 
+    @Column(name = "arm_bl_ativo")
+    @Builder.Default
+    private Boolean armBlAtivo = Boolean.TRUE;
+
     @Override
     public final boolean equals(Object o) {
         if (this == o) return true;
