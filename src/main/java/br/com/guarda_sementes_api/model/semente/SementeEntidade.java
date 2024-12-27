@@ -41,6 +41,10 @@ public class SementeEntidade {
     @Column(name = "sem_dt_updated_at")
     private LocalDateTime semDtUpdateAt;
 
+    @Column(name = "sem_bl_ativo")
+    @Builder.Default
+    private Boolean semBlAtivo = Boolean.TRUE;
+
     @Column(name = "arm_nr_id")
     private Long armNrId;
 
