@@ -31,6 +31,7 @@ public class SecurityConfigurations {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/usuarios/registrar").permitAll()
                         .requestMatchers(HttpMethod.POST, "/usuarios/autenticar").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/feira-troca-sementes").permitAll()
                         .requestMatchers(HttpMethod.POST, "/estados").hasAuthority("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/estados/{estNrId}").hasAuthority("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/estados/{estNrId}").hasAuthority("ADMIN")
