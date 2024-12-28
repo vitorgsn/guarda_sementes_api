@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum StatusTroca {
+public enum StatusTrocaEnum {
     PENDENTE("Pendente"),
     CONCLUIDA("Concluída"),
     CANCELADA("Cancelada");

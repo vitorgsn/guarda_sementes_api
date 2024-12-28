@@ -65,4 +65,10 @@ public class UsuarioServiceImpl implements UserDetailsService {
 
         this.usuarioRepository.save(usuario);
     }
+
+    public UsuarioDto buscarUsuarioPorId(UUID usuNrId) {
+        var usuario = this.usuarioRepository.buscarUsuarioPorId(usuNrId)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
+        return new UsuarioDto(usuario);
+    }
 }

@@ -16,6 +16,6 @@ public class HelloController {
     @GetMapping
     public String sayHello() {
 
-        return baseService.getUsuarioAutenticado().getUsername();
+        return baseService.getUsuarioAutenticado().getUsername() + " | " + baseService.getUsuarioAutenticado().getUsuNrId();
     }
 }

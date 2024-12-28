@@ -1,9 +1,11 @@
 package br.com.guarda_sementes_api.model.troca;
 
+import br.com.guarda_sementes_api.model.troca.enuns.StatusTrocaEnum;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -14,22 +16,23 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "trs_troca_semente")
-public class TrocaSementeRelacionamento {
+@Table(name = "stt_status_troca")
+public class StatusTrocaEntidade {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "trs_nr_id")
-    private Long trsNrId;
+    @Column(name = "stt_nr_id")
+    private Long sttNrId;
 
-    @Column(name = "tro_nr_id")
-    private UUID troNrId;
+    @Column(name = "stt_tx_status")
+    @Enumerated(EnumType.STRING)
+    private StatusTrocaEnum sttTxStatus;
 
-    @Column(name = "sem_nr_id")
-    private Long semNrId;
+    @Column(name = "tro_nr_id_troca")
+    private UUID troNrIdTroca;
 
-    @Column(name = "trs_nr_quantidade")
-    private Float trsNrQuantidade;
+    @Column(name = "stt_dt_status_troca")
+    private LocalDateTime sttDtStatusTroca;
 
     @Override
     public final boolean equals(Object o) {
@@ -38,8 +41,8 @@ public class TrocaSementeRelacionamento {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        TrocaSementeRelacionamento that = (TrocaSementeRelacionamento) o;
-        return getTrsNrId() != null && Objects.equals(getTrsNrId(), that.getTrsNrId());
+        StatusTrocaEntidade that = (StatusTrocaEntidade) o;
+        return getSttNrId() != null && Objects.equals(getSttNrId(), that.getSttNrId());
     }
 
     @Override

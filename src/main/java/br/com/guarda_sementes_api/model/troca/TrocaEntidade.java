@@ -1,6 +1,5 @@
 package br.com.guarda_sementes_api.model.troca;
 
-import br.com.guarda_sementes_api.model.troca.enuns.StatusTroca;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -28,11 +27,6 @@ public class TrocaEntidade {
 
     @Column(name = "tro_tx_instruncoes")
     private String troTxInstruncoes;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "tro_tx_status_troca")
-    @Builder.Default
-    private StatusTroca troTxStatusTroca = StatusTroca.PENDENTE;
 
     @Column(name = "usu_nr_id_remetente")
     private UUID usuNrIdRemetente;
