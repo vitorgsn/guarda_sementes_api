@@ -1,4 +1,4 @@
-package br.com.guarda_sementes_api.model.feiratrocasemente;
+package br.com.guarda_sementes_api.model.sementedisponiveltroca;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -16,31 +16,34 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "fts_feira_troca_semente")
-public class FeiraTrocaSementeEntidade {
+@Table(name = "sdt_semente_disponivel_troca")
+public class SementeDisponivelTrocaEntidade {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "fts_nr_id")
-    private Long ftsNrId;
+    @Column(name = "sdt_nr_id")
+    private Long sdtNrId;
 
-    @Column(name = "fts_bl_disponivel")
+    @Column(name = "sdt_bl_disponivel")
     @Builder.Default
-    private Boolean ftsBlDisponivel = Boolean.TRUE;
+    private Boolean sdtBlDisponivel = Boolean.TRUE;
 
-    @Column(name = "fts_nr_quantidade")
-    private Float ftsNrQuantidade;
+    @Column(name = "sdt_nr_quantidade")
+    private Float sdtNrQuantidade;
 
     @Column(name = "sem_nr_id_semente")
     private Long semNrIdSemente;
 
+    @Column(name = "sdt_tx_observacoes")
+    private String sdtTxObservacoes;
+
     @CreationTimestamp
-    @Column(name = "fts_dt_created_at")
-    private LocalDateTime ftsDtCreatedAt;
+    @Column(name = "sdt_dt_created_at")
+    private LocalDateTime sdtDtCreatedAt;
 
     @UpdateTimestamp
-    @Column(name = "fts_dt_updated_at")
-    private LocalDateTime ftsDtUpdatedAt;
+    @Column(name = "sdt_dt_updated_at")
+    private LocalDateTime sdtDtUpdatedAt;
 
     @Override
     public final boolean equals(Object o) {
@@ -49,8 +52,8 @@ public class FeiraTrocaSementeEntidade {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        FeiraTrocaSementeEntidade that = (FeiraTrocaSementeEntidade) o;
-        return getFtsNrId() != null && Objects.equals(getFtsNrId(), that.getFtsNrId());
+        SementeDisponivelTrocaEntidade that = (SementeDisponivelTrocaEntidade) o;
+        return getSdtNrId() != null && Objects.equals(getSdtNrId(), that.getSdtNrId());
     }
 
     @Override

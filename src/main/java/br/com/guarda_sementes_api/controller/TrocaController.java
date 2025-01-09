@@ -56,4 +56,22 @@ public class TrocaController {
     public void deletarTroca(@PathVariable @Valid UUID troNrId) {
         this.trocaService.deletarTroca(troNrId);
     }
+
+    @PostMapping("/{troNrId}/aceitar")
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public void aceitarTroca(@PathVariable @Valid UUID troNrId) {
+        this.trocaService.aceitarTroca(troNrId);
+    }
+
+    @PostMapping("/{troNrId}/recusar")
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public void recusarTroca(@PathVariable @Valid UUID troNrId) {
+        this.trocaService.recusarTroca(troNrId);
+    }
+
+    @PostMapping("/{troNrId}/cancelar")
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public void cancelarTroca(@PathVariable @Valid UUID troNrId) {
+        this.trocaService.cancelarTroca(troNrId);
+    }
 }

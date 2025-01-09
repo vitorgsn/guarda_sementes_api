@@ -13,6 +13,9 @@ public interface TrocaService {
     TrocaDto cadastrarOuAtualizarTroca(UUID troNrId, TrocaForm form);
     Page<TrocaComStatusDto> listarTrocasDoUsuarioRemetente(TrocaFiltroForm filtro, Pageable pageable);
     Page<TrocaComStatusDto> listarTrocasDoUsuarioDestinatario(TrocaFiltroForm filtro, Pageable pageable);
-    TrocaDto obterTrocaPorId(UUID troNrID);
-    void deletarTroca(UUID troNrID);
+    TrocaDto obterTrocaPorId(UUID troNrId);
+    void deletarTroca(UUID troNrId);
+    void aceitarTroca(UUID troNrId);
+    void recusarTroca(UUID troNrId);
+    void cancelarTroca(UUID troNrId);
 }

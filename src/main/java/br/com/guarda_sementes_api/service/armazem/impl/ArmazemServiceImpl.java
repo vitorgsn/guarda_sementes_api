@@ -14,6 +14,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 public class ArmazemServiceImpl extends BaseService implements ArmazemService {
@@ -61,5 +63,19 @@ public class ArmazemServiceImpl extends BaseService implements ArmazemService {
                 .orElseThrow(() -> new RuntimeException("Armazem não encontrado"));
         armazem.setArmBlAtivo(false);
         this.armazemRepository.save(armazem);
+    }
+
+    @Override
+    public ArmazemDto criarArmazemParaUsuario(ArmazemForm form, UUID usuNrId) {
+        var novoArmazem = new ArmazemEntidade();
+
+        novoArmazem.setArmTxDescricao(form.armTxDescricao());
+        novoArmazem.setCtaNrId(form.ctaNrId());
+
+        this.armazemRepository.save(novoArmazem);
+
+        this.armazemUsuarioService.cadastrarOuAtualizarArmazemUsuario(novoArmazem.getArmNrId(), usuNrId);
+
+        return new ArmazemDto(novoArmazem);
     }
 }

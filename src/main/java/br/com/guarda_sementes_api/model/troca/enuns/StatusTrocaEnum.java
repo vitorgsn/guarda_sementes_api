@@ -8,6 +8,7 @@ import lombok.Getter;
 public enum StatusTrocaEnum {
     PENDENTE("Pendente"),
     CONCLUIDA("Concluída"),
+    RECUSADA("Recusada"),
     CANCELADA("Cancelada");
 
     private final String status;
