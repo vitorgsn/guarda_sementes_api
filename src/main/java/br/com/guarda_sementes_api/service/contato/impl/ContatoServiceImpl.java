@@ -1,5 +1,6 @@
 package br.com.guarda_sementes_api.service.contato.impl;
 
+import br.com.guarda_sementes_api.exceptions.RegistroNaoEncontradoException;
 import br.com.guarda_sementes_api.model.contato.ContatoEntidade;
 import br.com.guarda_sementes_api.repository.contato.ContatoRepository;
 import br.com.guarda_sementes_api.service.BaseService;
@@ -24,7 +25,7 @@ public class ContatoServiceImpl extends BaseService implements ContatoService {
 
         var contato = conNrId != null ?
                 this.contatoRepository.buscarContatoPorId(conNrId)
-                        .orElseThrow(() -> new RuntimeException("Contato não encontrado")
+                        .orElseThrow(() -> new RegistroNaoEncontradoException("Contato não encontrado")
                 ) : new ContatoEntidade();
 
         contato.setConTxEmail(form.conTxEmail());
@@ -48,14 +49,14 @@ public class ContatoServiceImpl extends BaseService implements ContatoService {
     @Override
     public ContatoDto obterContatoPorId(Long conNrId) {
         var contato = this.contatoRepository.buscarContatoPorId(conNrId)
-                .orElseThrow(() -> new RuntimeException("Contato não encontrado."));
+                .orElseThrow(() -> new RegistroNaoEncontradoException("Contato não encontrado."));
 
         return new ContatoDto(contato);
     }
 
     @Override
     public void deletarContato(Long conNrId) {
-        var contato = this.contatoRepository.buscarContatoPorId(conNrId).orElseThrow(() -> new RuntimeException("Contato não encontrado."));
+        var contato = this.contatoRepository.buscarContatoPorId(conNrId).orElseThrow(() -> new RegistroNaoEncontradoException("Contato não encontrado."));
         contato.setConBlAtivo(false);
         this.contatoRepository.save(contato);
     }

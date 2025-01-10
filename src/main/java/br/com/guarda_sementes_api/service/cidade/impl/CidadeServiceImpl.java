@@ -1,13 +1,12 @@
 package br.com.guarda_sementes_api.service.cidade.impl;
 
+import br.com.guarda_sementes_api.exceptions.RegistroNaoEncontradoException;
 import br.com.guarda_sementes_api.model.cidade.CidadeEntidade;
-import br.com.guarda_sementes_api.model.estado.EstadoEntidade;
 import br.com.guarda_sementes_api.repository.cidade.CidadeRepository;
 import br.com.guarda_sementes_api.service.cidade.CidadeService;
 import br.com.guarda_sementes_api.service.cidade.dto.CidadeDto;
 import br.com.guarda_sementes_api.service.cidade.form.CidadeFiltroForm;
 import br.com.guarda_sementes_api.service.cidade.form.CidadeForm;
-import br.com.guarda_sementes_api.service.estado.dto.EstadoDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,7 +23,7 @@ public class CidadeServiceImpl implements CidadeService {
 
         var cidade = cidNrID != null ?
                 this.cidadeRepository.buscarCidadePorId(cidNrID)
-                        .orElseThrow(() -> new RuntimeException("Cidade não encontrada")
+                        .orElseThrow(() -> new RegistroNaoEncontradoException("Cidade não encontrada")
                         ) : new CidadeEntidade();
 
         cidade.setCidTxNome(form.cidTxNome());
@@ -43,14 +42,14 @@ public class CidadeServiceImpl implements CidadeService {
     @Override
     public CidadeDto obterCidadePorId(Long cidNrID) {
         var cidade = this.cidadeRepository.buscarCidadePorId(cidNrID)
-                        .orElseThrow(() -> new RuntimeException("Cidade não encontrada"));
+                        .orElseThrow(() -> new RegistroNaoEncontradoException("Cidade não encontrada"));
         return new CidadeDto(cidade);
     }
 
     @Override
     public void deletarCidade(Long cidNrID) {
         var cidade = this.cidadeRepository.buscarCidadePorId(cidNrID)
-                .orElseThrow(() -> new RuntimeException("Cidade não encontrada"));
+                .orElseThrow(() -> new RegistroNaoEncontradoException("Cidade não encontrada"));
 
         this.cidadeRepository.delete(cidade);
     }

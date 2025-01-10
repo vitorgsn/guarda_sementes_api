@@ -1,5 +1,6 @@
 package br.com.guarda_sementes_api.service.armazem.impl;
 
+import br.com.guarda_sementes_api.exceptions.RegistroNaoEncontradoException;
 import br.com.guarda_sementes_api.model.armazem.ArmazemEntidade;
 import br.com.guarda_sementes_api.repository.armazem.ArmazemRepository;
 import br.com.guarda_sementes_api.service.BaseService;
@@ -27,7 +28,7 @@ public class ArmazemServiceImpl extends BaseService implements ArmazemService {
     public ArmazemDto cadastrarOuAtualizarArmazem(Long armNrId, ArmazemForm form) {
         var armazem = armNrId != null ?
                 this.armazemRepository.buscarArmazemPorId(armNrId)
-                        .orElseThrow(() -> new RuntimeException("Armazem não encontrado")
+                        .orElseThrow(() -> new RegistroNaoEncontradoException("Armazem não encontrado")
                         ) : new ArmazemEntidade();
 
         if (form.ctaNrId() != null) this.categoriaArmazemService.obterCategoriaArmazemPorId(form.ctaNrId());
@@ -53,14 +54,14 @@ public class ArmazemServiceImpl extends BaseService implements ArmazemService {
     @Override
     public ArmazemDto obterArmazemPorId(Long armNrId) {
         var armazem = this.armazemRepository.buscarArmazemPorId(armNrId)
-                .orElseThrow(() -> new RuntimeException("Armazem não encontrado"));
+                .orElseThrow(() -> new RegistroNaoEncontradoException("Armazem não encontrado"));
         return new ArmazemDto(armazem);
     }
 
     @Override
     public void deletarArmazem(Long armNrId) {
         var armazem = this.armazemRepository.buscarArmazemPorId(armNrId)
-                .orElseThrow(() -> new RuntimeException("Armazem não encontrado"));
+                .orElseThrow(() -> new RegistroNaoEncontradoException("Armazem não encontrado"));
         armazem.setArmBlAtivo(false);
         this.armazemRepository.save(armazem);
     }

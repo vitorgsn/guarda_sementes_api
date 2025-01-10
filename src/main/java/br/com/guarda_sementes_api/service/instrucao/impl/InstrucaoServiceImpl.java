@@ -1,5 +1,6 @@
 package br.com.guarda_sementes_api.service.instrucao.impl;
 
+import br.com.guarda_sementes_api.exceptions.RegistroNaoEncontradoException;
 import br.com.guarda_sementes_api.model.instrucao.InstrucaoEntidade;
 import br.com.guarda_sementes_api.repository.instrucao.InstrucaoRepository;
 import br.com.guarda_sementes_api.service.instrucao.InstrucaoService;
@@ -22,7 +23,7 @@ public class InstrucaoServiceImpl implements InstrucaoService {
 
         var instrucao = insNrId != null ?
                 this.instrucaoRepository.buscarInstrucaoPorId(insNrId)
-                        .orElseThrow(() -> new RuntimeException("Instrução não encontrada.")
+                        .orElseThrow(() -> new RegistroNaoEncontradoException("Instrução não encontrada.")
                 ) : new InstrucaoEntidade();
 
         instrucao.setInsTxTitulo(form.insTxTitulo());
@@ -41,14 +42,14 @@ public class InstrucaoServiceImpl implements InstrucaoService {
     @Override
     public InstrucaoDto obterInstrucaoPorId(Long insNrId) {
         var instrucao = this.instrucaoRepository.buscarInstrucaoPorId(insNrId)
-                .orElseThrow(() -> new RuntimeException("Instrução não encontrada."));
+                .orElseThrow(() -> new RegistroNaoEncontradoException("Instrução não encontrada."));
         return new InstrucaoDto(instrucao);
     }
 
     @Override
     public void deletarInstrucao(Long insNrId) {
         var instrucao = this.instrucaoRepository.buscarInstrucaoPorId(insNrId)
-                .orElseThrow(() -> new RuntimeException("Instrução não encontrada."));
+                .orElseThrow(() -> new RegistroNaoEncontradoException("Instrução não encontrada."));
         this.instrucaoRepository.delete(instrucao);
     }
 }

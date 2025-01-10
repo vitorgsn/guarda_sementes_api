@@ -1,11 +1,14 @@
 package br.com.guarda_sementes_api.config.security;
 
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import org.springframework.http.HttpStatus;
 import br.com.guarda_sementes_api.repository.usuario.UsuarioRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,18 +26,30 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        var token = this.recuperarToken(request);
+        try {
+            var token = this.recuperarToken(request);
 
-        if (token != null) {
-            var login = this.tokenService.validarToken(token);
-            UserDetails usuario = this.usuarioRepository.findByUsuTxLogin(login);
+            if (token != null) {
+                var login = this.tokenService.validarToken(token);
+                UserDetails usuario = this.usuarioRepository.findByUsuTxLogin(login);
 
-            if (usuario != null) {
-                var authenticaiton = new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
-                SecurityContextHolder.getContext().setAuthentication(authenticaiton);
+                if (usuario != null) {
+                    var authenticaiton = new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
+                    SecurityContextHolder.getContext().setAuthentication(authenticaiton);
+                } else {
+                    throw new AccessDeniedException("Usuário não autenticado");
+                }
             }
+
+            filterChain.doFilter(request, response);
+        } catch (AccessDeniedException exception)  {
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            response.setContentType("text/plain");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write(exception.getMessage());
+            response.getWriter().flush();
         }
-        filterChain.doFilter(request, response);
+
     }
 
     private String recuperarToken(HttpServletRequest request) {

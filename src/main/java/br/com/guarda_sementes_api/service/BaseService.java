@@ -2,6 +2,7 @@ package br.com.guarda_sementes_api.service;
 
 import br.com.guarda_sementes_api.model.usuario.UsuarioEntidade;
 import org.springframework.lang.NonNull;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,6 @@ public class BaseService {
         if (principal instanceof UsuarioEntidade usuario) {
             return usuario;
         }
-        throw new RuntimeException("Nenhum usuário autenticado");
+        throw new AccessDeniedException("Nenhum usuário autenticado");
     }
 }

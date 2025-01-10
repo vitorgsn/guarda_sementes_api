@@ -1,5 +1,7 @@
 package br.com.guarda_sementes_api.service.troca.impl;
 
+import br.com.guarda_sementes_api.exceptions.EstoqueInsuficienteException;
+import br.com.guarda_sementes_api.exceptions.RegistroNaoEncontradoException;
 import br.com.guarda_sementes_api.model.troca.TrocaEntidade;
 import br.com.guarda_sementes_api.model.troca.TrocaSementeRelacionamento;
 import br.com.guarda_sementes_api.model.troca.enuns.StatusTrocaEnum;
@@ -8,9 +10,7 @@ import br.com.guarda_sementes_api.repository.troca.TrocaRepository;
 import br.com.guarda_sementes_api.repository.troca.TrocaSementeRepository;
 import br.com.guarda_sementes_api.service.BaseService;
 import br.com.guarda_sementes_api.service.armazem.ArmazemService;
-import br.com.guarda_sementes_api.service.armazem.ArmazemUsuarioService;
 import br.com.guarda_sementes_api.service.armazem.form.ArmazemForm;
-import br.com.guarda_sementes_api.service.instrucao.form.InstrucaoForm;
 import br.com.guarda_sementes_api.service.semente.SementeService;
 import br.com.guarda_sementes_api.service.semente.dto.SementeDto;
 import br.com.guarda_sementes_api.service.semente.form.SementeForm;
@@ -28,6 +28,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -53,7 +54,7 @@ public class TrocaServiceImpl extends BaseService implements TrocaService {
 
         var troca = troNrId != null ?
                 this.trocaRepository.buscarTrocaPorId(troNrId)
-                        .orElseThrow(() -> new RuntimeException("Troca não encontrada")
+                        .orElseThrow(() -> new RegistroNaoEncontradoException("Troca não encontrada")
                         ) : new TrocaEntidade();
 
         if (form.usuNrIdDestinatario() != null) this.usuarioService.buscarUsuarioPorId(form.usuNrIdDestinatario());
@@ -95,7 +96,7 @@ public class TrocaServiceImpl extends BaseService implements TrocaService {
     @Override
     public TrocaDto obterTrocaPorId(UUID troNrId) {
         var troca = this.trocaRepository.buscarTrocaPorId(troNrId)
-                .orElseThrow(() -> new RuntimeException("Troca não encontrada."));
+                .orElseThrow(() -> new RegistroNaoEncontradoException("Troca não encontrada."));
         return new TrocaDto(troca);
     }
 
@@ -103,10 +104,10 @@ public class TrocaServiceImpl extends BaseService implements TrocaService {
     @Transactional
     public void deletarTroca(UUID troNrId) {
         var troca = this.trocaRepository.buscarTrocaPorId(troNrId)
-                .orElseThrow(() -> new RuntimeException("Troca não encontrada."));
+                .orElseThrow(() -> new RegistroNaoEncontradoException("Troca não encontrada."));
 
         if (!statusTrocaService.obterStatusAtualDaTroca(troNrId).equals(StatusTrocaEnum.PENDENTE)) {
-            throw new RuntimeException("Não foi possível deletar a troca. Só é possível deletar uma troca que esteja PENDENTE.");
+            throw new AccessDeniedException("Não foi possível deletar a troca. Só é possível deletar uma troca que esteja PENDENTE.");
         }
 
 
@@ -119,10 +120,10 @@ public class TrocaServiceImpl extends BaseService implements TrocaService {
         var usuarioAutenticado = this.getUsuarioAutenticado();
 
         var troca = this.trocaRepository.buscarTrocaPorId(troNrId)
-                        .orElseThrow(() -> new RuntimeException("Troca não encontrada"));
+                        .orElseThrow(() -> new RegistroNaoEncontradoException("Troca não encontrada"));
 
         if (!troca.getUsuNrIdDestinatario().equals(usuarioAutenticado.getUsuNrId())) {
-            throw new RuntimeException("Você não possui permissão para aceitar a troca.");
+            throw new AccessDeniedException("Você não possui permissão para aceitar a troca.");
         }
 
         var sementesDaTroca = this.trocaSementeRepository.buscarTrocaSementePorTroNrId(troNrId);
@@ -160,10 +161,10 @@ public class TrocaServiceImpl extends BaseService implements TrocaService {
         var usuarioAutenticado = this.getUsuarioAutenticado();
 
         var troca = this.trocaRepository.buscarTrocaPorId(troNrId)
-                .orElseThrow(() -> new RuntimeException("Troca não encontrada"));
+                .orElseThrow(() -> new RegistroNaoEncontradoException("Troca não encontrada"));
 
         if (!troca.getUsuNrIdDestinatario().equals(usuarioAutenticado.getUsuNrId())) {
-            throw new RuntimeException("Você não possui permissão para recusar a troca.");
+            throw new AccessDeniedException("Você não possui permissão para recusar a troca.");
         }
 
         this.statusTrocaService.cadastrarOuAtualizarStatusTroca(null, new StatusTrocaForm(StatusTrocaEnum.RECUSADA, troca.getTroNrId()));
@@ -175,10 +176,14 @@ public class TrocaServiceImpl extends BaseService implements TrocaService {
         var usuarioAutenticado = this.getUsuarioAutenticado();
 
         var troca = this.trocaRepository.buscarTrocaPorId(troNrId)
-                .orElseThrow(() -> new RuntimeException("Troca não encontrada"));
+                .orElseThrow(() -> new RegistroNaoEncontradoException("Troca não encontrada"));
 
         if (!troca.getUsuNrIdRemetente().equals(usuarioAutenticado.getUsuNrId())) {
-            throw new RuntimeException("Você não possui permissão para cancelar a troca.");
+            throw new AccessDeniedException("Você não possui permissão para cancelar a troca.");
+        }
+
+        if (!statusTrocaService.obterStatusAtualDaTroca(troNrId).equals(StatusTrocaEnum.PENDENTE)) {
+            throw new AccessDeniedException("Não foi possível cancelar a troca. Só é possível cancelar uma troca que esteja PENDENTE.");
         }
 
         this.statusTrocaService.cadastrarOuAtualizarStatusTroca(null, new StatusTrocaForm(StatusTrocaEnum.CANCELADA, troca.getTroNrId()));
@@ -186,7 +191,7 @@ public class TrocaServiceImpl extends BaseService implements TrocaService {
 
     private void validarSaldo(SementeDto semente, Float quantidadePretendida) {
         if (semente.semNrQuantidade() < quantidadePretendida) {
-            throw new RuntimeException("Você não possui estoque suficiente para essa semente.");
+            throw new EstoqueInsuficienteException("Você não possui estoque suficiente para essa semente.");
         }
     }
 }

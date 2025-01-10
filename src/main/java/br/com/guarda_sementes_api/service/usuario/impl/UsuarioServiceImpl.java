@@ -1,5 +1,7 @@
 package br.com.guarda_sementes_api.service.usuario.impl;
 
+import br.com.guarda_sementes_api.exceptions.RegistroJaExisteException;
+import br.com.guarda_sementes_api.exceptions.RegistroNaoEncontradoException;
 import br.com.guarda_sementes_api.model.usuario.PerfilUsuarioRelacionamento;
 import br.com.guarda_sementes_api.model.usuario.UsuarioEntidade;
 import br.com.guarda_sementes_api.repository.usuario.PerfilUsuarioRelacionamentoRepository;
@@ -30,11 +32,11 @@ public class UsuarioServiceImpl implements UserDetailsService {
     public UsuarioDto cadastrarOuAtualizarUsuario(UUID usuNrId, UsuarioForm form) {
         var usuario = usuNrId != null ?
                 this.usuarioRepository.buscarUsuarioPorId(usuNrId)
-                        .orElseThrow(() -> new RuntimeException("Usuário não encontrado")): new UsuarioEntidade();
+                        .orElseThrow(() -> new RegistroNaoEncontradoException("Usuário não encontrado")): new UsuarioEntidade();
 
         var usu = this.usuarioRepository.findByUsuTxLogin(form.usuTxLogin());
 
-        if (usu != null) throw new RuntimeException("Este login já está em uso, por favor, informe um novo login");
+        if (usu != null) throw new RegistroJaExisteException("Este login já está em uso, por favor, informe um novo login");
 
         usuario.setUsuTxNome(form.usuTxNome());
         usuario.setUsuTxLogin(form.usuTxLogin());
@@ -59,7 +61,7 @@ public class UsuarioServiceImpl implements UserDetailsService {
 
     public void inativarOuAtivarUsuario(UUID usuNrId) {
         var usuario = this.usuarioRepository.buscarUsuarioPorId(usuNrId)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
+                .orElseThrow(() -> new RegistroNaoEncontradoException("Usuário não encontrado."));
 
         usuario.setUsuBlAtivo(!usuario.isUsuBlAtivo());
 
@@ -68,7 +70,7 @@ public class UsuarioServiceImpl implements UserDetailsService {
 
     public UsuarioDto buscarUsuarioPorId(UUID usuNrId) {
         var usuario = this.usuarioRepository.buscarUsuarioPorId(usuNrId)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
+                .orElseThrow(() -> new RegistroNaoEncontradoException("Usuário não encontrado."));
         return new UsuarioDto(usuario);
     }
 }

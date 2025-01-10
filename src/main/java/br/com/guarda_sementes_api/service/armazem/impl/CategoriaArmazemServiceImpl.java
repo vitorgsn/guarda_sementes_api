@@ -1,5 +1,6 @@
 package br.com.guarda_sementes_api.service.armazem.impl;
 
+import br.com.guarda_sementes_api.exceptions.RegistroNaoEncontradoException;
 import br.com.guarda_sementes_api.model.armazem.CategoriaArmazemEntidade;
 import br.com.guarda_sementes_api.repository.armazem.CategoriaArmazemRepository;
 import br.com.guarda_sementes_api.service.armazem.CategoriaArmazemService;
@@ -21,7 +22,7 @@ public class CategoriaArmazemServiceImpl implements CategoriaArmazemService {
     public CategoriaArmazemDto cadastrarOuAtualizarCategoriaArmazem(Long ctaNrId, CategoriaArmazemForm form) {
         var categoria = ctaNrId != null ?
                 this.categoriaArmazemRepository.buscarCategoriaArmazemPorId(ctaNrId)
-                        .orElseThrow(() -> new RuntimeException("Categoria não encontrada")
+                        .orElseThrow(() -> new RegistroNaoEncontradoException("Categoria não encontrada")
                         ) : new CategoriaArmazemEntidade();
 
         categoria.setCtaTxNome(form.ctaTxNome());
@@ -41,7 +42,7 @@ public class CategoriaArmazemServiceImpl implements CategoriaArmazemService {
     public CategoriaArmazemDto obterCategoriaArmazemPorId(Long ctaNrId) {
 
         var categoria = this.categoriaArmazemRepository.buscarCategoriaArmazemPorId(ctaNrId)
-                .orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
+                .orElseThrow(() -> new RegistroNaoEncontradoException("Categoria não encontrada"));
 
         return new CategoriaArmazemDto(categoria);
     }
@@ -49,7 +50,7 @@ public class CategoriaArmazemServiceImpl implements CategoriaArmazemService {
     @Override
     public void deletarCategoriaArmazem(Long ctaNrId) {
         var categoria = this.categoriaArmazemRepository.buscarCategoriaArmazemPorId(ctaNrId)
-                .orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
+                .orElseThrow(() -> new RegistroNaoEncontradoException("Categoria não encontrada"));
         categoria.setCtaBlAtivo(false);
         this.categoriaArmazemRepository.save(categoria);
     }

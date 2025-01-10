@@ -1,8 +1,9 @@
 package br.com.guarda_sementes_api.service.sementedisponiveltroca.impl;
 
+import br.com.guarda_sementes_api.exceptions.EstoqueInsuficienteException;
+import br.com.guarda_sementes_api.exceptions.RegistroNaoEncontradoException;
 import br.com.guarda_sementes_api.model.sementedisponiveltroca.SementeDisponivelTrocaEntidade;
 import br.com.guarda_sementes_api.repository.sementedisponiveltroca.SementeDisponivelTrocaRepository;
-import br.com.guarda_sementes_api.service.semente.dto.SementeDto;
 import br.com.guarda_sementes_api.service.sementedisponiveltroca.SementeDisponivelTrocaService;
 import br.com.guarda_sementes_api.service.sementedisponiveltroca.dto.SementeDisponivelTrocaDto;
 import br.com.guarda_sementes_api.service.sementedisponiveltroca.form.SementeDisponivelTrocaFiltroForm;
@@ -26,14 +27,14 @@ public class SementeDisponivelTrocaServiceImpl implements SementeDisponivelTroca
 
         var sementeDisponivelTroca = sdtNrId != null ?
                 this.sementeDisponivelTrocaRepository.buscarSementeDisponivelTrocaPorId(sdtNrId)
-                        .orElseThrow(() -> new RuntimeException("Semente indisponível para troca.")
+                        .orElseThrow(() -> new RegistroNaoEncontradoException("Semente indisponível para troca.")
                 ) : new SementeDisponivelTrocaEntidade();
 
         var semente = form.semNrIdSemente() != null ? this.sementeService.obterSementePorId(form.semNrIdSemente()) : null;
 
         if (semente != null) {
             if (semente.semNrQuantidade() < form.sdtNrQuantidade()) {
-                throw new RuntimeException("Não foi possível disponibilizar a semente para troca, estoque insuficiente");
+                throw new EstoqueInsuficienteException("Não foi possível disponibilizar a semente para troca, estoque insuficiente");
             }
         }
 
@@ -55,7 +56,7 @@ public class SementeDisponivelTrocaServiceImpl implements SementeDisponivelTroca
     public SementeDisponivelTrocaDto obterSementeDisponivelTrocaPorId(Long sdtNrId) {
 
         var sementeDisponivelTroca = this.sementeDisponivelTrocaRepository.buscarSementeDisponivelTrocaPorId(sdtNrId)
-                .orElseThrow(() -> new RuntimeException("Semente indisponível para troca."));
+                .orElseThrow(() -> new RegistroNaoEncontradoException("Semente indisponível para troca."));
 
         return new SementeDisponivelTrocaDto(sementeDisponivelTroca);
     }
@@ -64,7 +65,7 @@ public class SementeDisponivelTrocaServiceImpl implements SementeDisponivelTroca
     public void deletarSementeDisponivelTroca(Long sdtNrId) {
 
         var sementeDisponivelTroca = this.sementeDisponivelTrocaRepository.buscarSementeDisponivelTrocaPorId(sdtNrId)
-                .orElseThrow(() -> new RuntimeException("Semente indisponível para troca."));
+                .orElseThrow(() -> new RegistroNaoEncontradoException("Semente indisponível para troca."));
 
         sementeDisponivelTroca.setSdtBlDisponivel(false);
         this.sementeDisponivelTrocaRepository.save(sementeDisponivelTroca);
@@ -73,7 +74,7 @@ public class SementeDisponivelTrocaServiceImpl implements SementeDisponivelTroca
     @Override
     public void indisponibilizarSementeParaTroca(Long sdtNrId) {
         var sementeDisponivelTroca = this.sementeDisponivelTrocaRepository.buscarSementeDisponivelTrocaPorId(sdtNrId)
-                .orElseThrow(() -> new RuntimeException("Semente indisponível para troca."));
+                .orElseThrow(() -> new RegistroNaoEncontradoException("Semente indisponível para troca."));
 
         sementeDisponivelTroca.setSdtBlDisponivel(false);
         this.sementeDisponivelTrocaRepository.save(sementeDisponivelTroca);

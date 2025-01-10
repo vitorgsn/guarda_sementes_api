@@ -44,6 +44,7 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.POST, "/categorias-armazem").hasAuthority("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/categorias-armazem/{ctaNrId}").hasAuthority("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/categorias-armazem/{ctaNrId}").hasAuthority("ADMIN")
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/hello").hasAuthority("GUARDIAO")
                         .anyRequest().authenticated()
                 )

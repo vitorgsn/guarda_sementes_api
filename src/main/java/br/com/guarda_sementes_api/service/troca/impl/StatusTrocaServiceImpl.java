@@ -1,5 +1,7 @@
 package br.com.guarda_sementes_api.service.troca.impl;
 
+import br.com.guarda_sementes_api.exceptions.RegistroNaoEncontradoException;
+import br.com.guarda_sementes_api.exceptions.StatusNaoEncontradoException;
 import br.com.guarda_sementes_api.model.troca.StatusTrocaEntidade;
 import br.com.guarda_sementes_api.model.troca.enuns.StatusTrocaEnum;
 import br.com.guarda_sementes_api.repository.troca.StatusTrocaRepository;
@@ -39,7 +41,7 @@ public class StatusTrocaServiceImpl implements StatusTrocaService {
                 this.statusTrocaRepository.obterStatusAtualDaTroca(troNrId) : null;
 
         if (status == null) {
-            throw new RuntimeException("Status não encontrado");
+            throw new StatusNaoEncontradoException("Status não encontrado, por favor contate o suporte do aplicativo");
         }
 
         return status;

@@ -1,5 +1,6 @@
 package br.com.guarda_sementes_api.service.endereco.impl;
 
+import br.com.guarda_sementes_api.exceptions.RegistroNaoEncontradoException;
 import br.com.guarda_sementes_api.model.endereco.EnderecoEntidade;
 import br.com.guarda_sementes_api.repository.endereco.EnderecoRepository;
 import br.com.guarda_sementes_api.service.BaseService;
@@ -26,7 +27,7 @@ public class EnderecoServiceImpl extends BaseService implements EnderecoService 
 
         var endereco = endNrId != null ?
                 this.enderecoRepository.buscarEnderecoPorId(endNrId)
-                        .orElseThrow(() -> new RuntimeException("Endereço não encontrado.")
+                        .orElseThrow(() -> new RegistroNaoEncontradoException("Endereço não encontrado.")
                         ) : new EnderecoEntidade();
 
         endereco.setEndTxBairro(form.endTxBairro());
@@ -53,14 +54,14 @@ public class EnderecoServiceImpl extends BaseService implements EnderecoService 
     @Override
     public EnderecoDto obterEnderecoPorId(Long endNrId) {
         var endereco = this.enderecoRepository.buscarEnderecoPorId(endNrId)
-                .orElseThrow(() -> new RuntimeException("Endereço não encontrado."));
+                .orElseThrow(() -> new RegistroNaoEncontradoException("Endereço não encontrado."));
 
         return new EnderecoDto(endereco);
     }
 
     @Override
     public void deletarEndereco(Long endNrId) {
-        var endereco = this.enderecoRepository.buscarEnderecoPorId(endNrId).orElseThrow(() -> new RuntimeException("Endereço não encontrado."));
+        var endereco = this.enderecoRepository.buscarEnderecoPorId(endNrId).orElseThrow(() -> new RegistroNaoEncontradoException("Endereço não encontrado."));
         endereco.setEndBlAtivo(false);
         this.enderecoRepository.save(endereco);
     }
