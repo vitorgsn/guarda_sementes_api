@@ -6,6 +6,7 @@ import br.com.guarda_sementes_api.model.usuario.PerfilUsuarioRelacionamento;
 import br.com.guarda_sementes_api.model.usuario.UsuarioEntidade;
 import br.com.guarda_sementes_api.repository.usuario.PerfilUsuarioRelacionamentoRepository;
 import br.com.guarda_sementes_api.repository.usuario.UsuarioRepository;
+import br.com.guarda_sementes_api.service.BaseService;
 import br.com.guarda_sementes_api.service.usuario.dto.UsuarioDto;
 import br.com.guarda_sementes_api.service.usuario.form.UsuarioForm;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class UsuarioServiceImpl implements UserDetailsService {
+public class UsuarioServiceImpl extends BaseService implements UserDetailsService {
 
     private final UsuarioRepository usuarioRepository;
     private final PerfilUsuarioRelacionamentoRepository perfilUsuarioRelacionamentoRepository;
@@ -70,6 +71,14 @@ public class UsuarioServiceImpl implements UserDetailsService {
 
     public UsuarioDto buscarUsuarioPorId(UUID usuNrId) {
         var usuario = this.usuarioRepository.buscarUsuarioPorId(usuNrId)
+                .orElseThrow(() -> new RegistroNaoEncontradoException("Usuário não encontrado."));
+        return new UsuarioDto(usuario);
+    }
+
+    public UsuarioDto buscarPerfil() {
+        var usuarioAutenticado = this.getUsuarioAutenticado();
+
+        var usuario = this.usuarioRepository.buscarUsuarioPorId(usuarioAutenticado.getUsuNrId())
                 .orElseThrow(() -> new RegistroNaoEncontradoException("Usuário não encontrado."));
         return new UsuarioDto(usuario);
     }

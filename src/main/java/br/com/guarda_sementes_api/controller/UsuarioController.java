@@ -51,4 +51,12 @@ public class UsuarioController {
     public void registrar(@PathVariable @Valid UUID usuNrId) {
         this.usuarioServiceImpl.inativarOuAtivarUsuario(usuNrId);
     }
+
+    @GetMapping("/perfil")
+    @ResponseStatus(code = HttpStatus.OK)
+    @Operation(summary = "Buscar o Perfil do Usuário Autenticado", description = "Endpoint responsável por buscar o perfil do usuário autenticado.")
+    @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = UsuarioDto.class)))
+    public UsuarioDto perfil() {
+        return this.usuarioServiceImpl.buscarPerfil();
+    }
 }
