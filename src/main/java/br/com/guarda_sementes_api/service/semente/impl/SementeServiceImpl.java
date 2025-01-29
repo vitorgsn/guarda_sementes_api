@@ -35,6 +35,7 @@ public class SementeServiceImpl extends BaseService implements SementeService {
         semente.setArmNrId(form.armNrId());
 
         this.sementeRepository.save(semente);
+        System.out.println(semente);
 
         return new SementeDto(semente);
     }

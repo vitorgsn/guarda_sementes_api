@@ -36,9 +36,20 @@ public class EnderecoServiceImpl extends BaseService implements EnderecoService 
         endereco.setEndTxReferencia(form.endTxReferencia());
         endereco.setCidNrId(form.cidNrId());
 
-        this.enderecoRepository.save(endereco);
-
         var usuarioAutenticado = this.getUsuarioAutenticado();
+
+        if (form.endBlEnderecoPadrao()) {
+            var enderecoPadrao = this.enderecoRepository.buscarEnderecoPadrao(usuarioAutenticado.getUsuNrId());
+
+            if (enderecoPadrao.isPresent()) {
+                enderecoPadrao.get().setEndBlEnderecoPadrao(false);
+                this.enderecoRepository.save(enderecoPadrao.get());
+            }
+
+            endereco.setEndBlEnderecoPadrao(true);
+        }
+
+        this.enderecoRepository.save(endereco);
 
         this.enderecoUsuarioService.cadastrarOuAtualizarEnderecoUsuario(endereco.getEndNrId(), usuarioAutenticado.getUsuNrId());
 
@@ -64,5 +75,14 @@ public class EnderecoServiceImpl extends BaseService implements EnderecoService 
         var endereco = this.enderecoRepository.buscarEnderecoPorId(endNrId).orElseThrow(() -> new RegistroNaoEncontradoException("Endereço não encontrado."));
         endereco.setEndBlAtivo(false);
         this.enderecoRepository.save(endereco);
+    }
+
+    @Override
+    public EnderecoDto buscarEnderecoPadrao() {
+        var usuarioAutenticado = this.getUsuarioAutenticado();
+        var endereco = this.enderecoRepository.buscarEnderecoPadrao(usuarioAutenticado.getUsuNrId())
+                .orElseThrow(() -> new RegistroNaoEncontradoException("Endereço padrão não encontrado."));
+
+        return new EnderecoDto(endereco);
     }
 }

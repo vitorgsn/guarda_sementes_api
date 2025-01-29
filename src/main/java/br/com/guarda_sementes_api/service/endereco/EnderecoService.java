@@ -11,4 +11,5 @@ public interface EnderecoService {
     Page<EnderecoDto> listarEnderecosDoUsuario(EnderecoFiltroForm filtro, Pageable pageable);
     EnderecoDto obterEnderecoPorId(Long endNrId);
     void deletarEndereco(Long endNrId);
+    EnderecoDto buscarEnderecoPadrao ();
 }

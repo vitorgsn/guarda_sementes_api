@@ -5,6 +5,7 @@ public record EnderecoForm(
         String endTxLogradouro,
         String endTxNumero,
         String endTxReferencia,
-        Long cidNrId
+        Long cidNrId,
+        Boolean endBlEnderecoPadrao
 ) {
 }

@@ -63,4 +63,12 @@ public class EnderecoController {
     public void deletarEndereco(@PathVariable @Valid Long endNrId) {
         this.enderecoService.deletarEndereco(endNrId);
     }
+
+    @GetMapping("/padrao")
+    @ResponseStatus(code = HttpStatus.OK)
+    @Operation(summary = "Buscar o Endereço Padrão do Usuário", description = "Endpoint responsável por buscar o endereço padrão do usuário.")
+    @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = EnderecoDto.class)))
+    public EnderecoDto buscarEnderecoPadrao() {
+        return this.enderecoService.buscarEnderecoPadrao();
+    }
 }

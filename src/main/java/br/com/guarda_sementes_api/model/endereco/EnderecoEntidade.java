@@ -51,6 +51,9 @@ public class EnderecoEntidade {
     @Builder.Default
     private Boolean endBlAtivo = Boolean.TRUE;
 
+    @Column(name = "end_bl_endereco_padrao")
+    private Boolean endBlEnderecoPadrao;
+
     @Override
     public final boolean equals(Object o) {
         if (this == o) return true;

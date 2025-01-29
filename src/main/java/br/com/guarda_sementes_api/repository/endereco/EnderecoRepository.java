@@ -44,4 +44,19 @@ public interface EnderecoRepository extends JpaRepository<EnderecoEntidade, Long
                     and (:#{#filtro.cidNrId() == null} or ende.cid_nr_id=:#{#filtro.cidNrId()})
                     """)
     Page<EnderecoEntidade> listarEnderecosDoUsuario(@Param("filtro") EnderecoFiltroForm filtro, Pageable pageable, UUID usuNrId);
+
+    @Query(nativeQuery = true,
+            value = """
+                    select
+                        ende.*
+                    from
+                        end_endereco ende
+                    left join
+                        enu_endereco_usuario enu on enu.end_nr_id = ende.end_nr_id
+                    where
+                        ende.end_bl_ativo = true
+                    and enu.usu_nr_id =:usuNrId
+                    and ende.end_bl_endereco_padrao = true
+                    """)
+    Optional<EnderecoEntidade> buscarEnderecoPadrao(UUID usuNrId);
 }

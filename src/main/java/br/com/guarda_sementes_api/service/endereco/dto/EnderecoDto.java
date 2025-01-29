@@ -12,7 +12,8 @@ public record EnderecoDto(
         String endTxReferencia,
         Long cidNrId,
         LocalDateTime endDtCreatedAt,
-        LocalDateTime endDtUpdateAt
+        LocalDateTime endDtUpdateAt,
+        Boolean endBlEnderecoPadrao
 ) {
     public EnderecoDto(EnderecoEntidade entidade) {
         this (
@@ -23,7 +24,8 @@ public record EnderecoDto(
                 entidade.getEndTxReferencia(),
                 entidade.getCidNrId(),
                 entidade.getEndDtCreatedAt(),
-                entidade.getEndDtUpdateAt()
+                entidade.getEndDtUpdateAt(),
+                entidade.getEndBlEnderecoPadrao()
         );
     }
 }
