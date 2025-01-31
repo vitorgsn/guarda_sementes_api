@@ -1,6 +1,7 @@
 package br.com.guarda_sementes_api.controller;
 
 import br.com.guarda_sementes_api.service.sementedisponiveltroca.SementeDisponivelTrocaService;
+import br.com.guarda_sementes_api.service.sementedisponiveltroca.dto.SementeDisponivelTrocaDadosCompletosDto;
 import br.com.guarda_sementes_api.service.sementedisponiveltroca.dto.SementeDisponivelTrocaDto;
 import br.com.guarda_sementes_api.service.sementedisponiveltroca.form.SementeDisponivelTrocaFiltroForm;
 import br.com.guarda_sementes_api.service.sementedisponiveltroca.form.SementeDisponivelTrocaForm;
@@ -43,8 +44,8 @@ public class SementeDisponivelTrocaController {
     @GetMapping()
     @ResponseStatus(code = HttpStatus.OK)
     @Operation(summary = "Listar Sementes Disponíveis para Troca", description = "Endpoint responsável por listar as sementes disponíveis para troca.")
-    @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = SementeDisponivelTrocaDto.class)))
-    public Page<SementeDisponivelTrocaDto> listarSementesDisponiveisParaTroca(SementeDisponivelTrocaFiltroForm filtro, @PageableDefault(size = Integer.MAX_VALUE) Pageable pageable) {
+    @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = SementeDisponivelTrocaDadosCompletosDto.class)))
+    public Page<SementeDisponivelTrocaDadosCompletosDto> listarSementesDisponiveisParaTroca(SementeDisponivelTrocaFiltroForm filtro, @PageableDefault(size = Integer.MAX_VALUE) Pageable pageable) {
         return this.sementeDisponivelTrocaService.listarSementesDisponiveisParaTroca(filtro, pageable);
     }
 

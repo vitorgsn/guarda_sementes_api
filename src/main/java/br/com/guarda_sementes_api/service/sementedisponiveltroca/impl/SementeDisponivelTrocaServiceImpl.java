@@ -5,6 +5,7 @@ import br.com.guarda_sementes_api.exceptions.RegistroNaoEncontradoException;
 import br.com.guarda_sementes_api.model.sementedisponiveltroca.SementeDisponivelTrocaEntidade;
 import br.com.guarda_sementes_api.repository.sementedisponiveltroca.SementeDisponivelTrocaRepository;
 import br.com.guarda_sementes_api.service.sementedisponiveltroca.SementeDisponivelTrocaService;
+import br.com.guarda_sementes_api.service.sementedisponiveltroca.dto.SementeDisponivelTrocaDadosCompletosDto;
 import br.com.guarda_sementes_api.service.sementedisponiveltroca.dto.SementeDisponivelTrocaDto;
 import br.com.guarda_sementes_api.service.sementedisponiveltroca.form.SementeDisponivelTrocaFiltroForm;
 import br.com.guarda_sementes_api.service.sementedisponiveltroca.form.SementeDisponivelTrocaForm;
@@ -48,8 +49,8 @@ public class SementeDisponivelTrocaServiceImpl implements SementeDisponivelTroca
     }
 
     @Override
-    public Page<SementeDisponivelTrocaDto> listarSementesDisponiveisParaTroca(SementeDisponivelTrocaFiltroForm filtro, Pageable pageable) {
-        return this.sementeDisponivelTrocaRepository.listarSementesDisponiveisParaTroca(filtro, pageable).map(SementeDisponivelTrocaDto::new);
+    public Page<SementeDisponivelTrocaDadosCompletosDto> listarSementesDisponiveisParaTroca(SementeDisponivelTrocaFiltroForm filtro, Pageable pageable) {
+        return this.sementeDisponivelTrocaRepository.listarSementesDisponiveisParaTroca(filtro, pageable).map(SementeDisponivelTrocaDadosCompletosDto::new);
     }
 
     @Override
