@@ -5,6 +5,7 @@ import br.com.guarda_sementes_api.model.endereco.EnderecoEntidade;
 import br.com.guarda_sementes_api.repository.endereco.EnderecoRepository;
 import br.com.guarda_sementes_api.service.BaseService;
 import br.com.guarda_sementes_api.service.endereco.EnderecoService;
+import br.com.guarda_sementes_api.service.endereco.dto.EnderecoDadosCompletosDto;
 import br.com.guarda_sementes_api.service.endereco.dto.EnderecoDto;
 import br.com.guarda_sementes_api.service.endereco.form.EnderecoFiltroForm;
 import br.com.guarda_sementes_api.service.endereco.form.EnderecoForm;
@@ -47,6 +48,8 @@ public class EnderecoServiceImpl extends BaseService implements EnderecoService 
             }
 
             endereco.setEndBlEnderecoPadrao(true);
+        } else {
+            endereco.setEndBlEnderecoPadrao(false);
         }
 
         this.enderecoRepository.save(endereco);
@@ -57,9 +60,9 @@ public class EnderecoServiceImpl extends BaseService implements EnderecoService 
     }
 
     @Override
-    public Page<EnderecoDto> listarEnderecosDoUsuario(EnderecoFiltroForm filtro, Pageable pageable) {
+    public Page<EnderecoDadosCompletosDto> listarEnderecosDoUsuario(EnderecoFiltroForm filtro, Pageable pageable) {
         var usuarioAutenticado = this.getUsuarioAutenticado();
-        return this.enderecoRepository.listarEnderecosDoUsuario(filtro, pageable, usuarioAutenticado.getUsuNrId()).map(EnderecoDto::new);
+        return this.enderecoRepository.listarEnderecosDoUsuario(filtro, pageable, usuarioAutenticado.getUsuNrId()).map(EnderecoDadosCompletosDto::new);
     }
 
     @Override

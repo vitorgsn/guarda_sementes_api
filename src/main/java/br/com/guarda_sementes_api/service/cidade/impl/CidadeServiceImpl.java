@@ -4,6 +4,7 @@ import br.com.guarda_sementes_api.exceptions.RegistroNaoEncontradoException;
 import br.com.guarda_sementes_api.model.cidade.CidadeEntidade;
 import br.com.guarda_sementes_api.repository.cidade.CidadeRepository;
 import br.com.guarda_sementes_api.service.cidade.CidadeService;
+import br.com.guarda_sementes_api.service.cidade.dto.CidadeDadosCompletosDto;
 import br.com.guarda_sementes_api.service.cidade.dto.CidadeDto;
 import br.com.guarda_sementes_api.service.cidade.form.CidadeFiltroForm;
 import br.com.guarda_sementes_api.service.cidade.form.CidadeForm;
@@ -35,8 +36,8 @@ public class CidadeServiceImpl implements CidadeService {
     }
 
     @Override
-    public Page<CidadeDto> listarCidades(CidadeFiltroForm filtro, Pageable pageable) {
-        return this.cidadeRepository.listarCidades(filtro, pageable).map(CidadeDto::new);
+    public Page<CidadeDadosCompletosDto> listarCidades(CidadeFiltroForm filtro, Pageable pageable) {
+        return this.cidadeRepository.listarCidades(filtro, pageable).map(CidadeDadosCompletosDto::new);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package br.com.guarda_sementes_api.controller;
 
 import br.com.guarda_sementes_api.service.cidade.CidadeService;
+import br.com.guarda_sementes_api.service.cidade.dto.CidadeDadosCompletosDto;
 import br.com.guarda_sementes_api.service.cidade.dto.CidadeDto;
 import br.com.guarda_sementes_api.service.cidade.form.CidadeFiltroForm;
 import br.com.guarda_sementes_api.service.cidade.form.CidadeForm;
@@ -43,8 +44,8 @@ public class CidadeController {
     @GetMapping()
     @ResponseStatus(code = HttpStatus.OK)
     @Operation(summary = "Listar as Cidades", description = "Endpoint responsável por listar as cidades.")
-    @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = CidadeDto.class)))
-    public Page<CidadeDto> listarCidades(CidadeFiltroForm filtro, @PageableDefault(size = Integer.MAX_VALUE) Pageable pageable) {
+    @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = CidadeDadosCompletosDto.class)))
+    public Page<CidadeDadosCompletosDto> listarCidades(CidadeFiltroForm filtro, @PageableDefault(size = Integer.MAX_VALUE) Pageable pageable) {
         return this.cidadeService.listarCidades(filtro, pageable);
     }
 

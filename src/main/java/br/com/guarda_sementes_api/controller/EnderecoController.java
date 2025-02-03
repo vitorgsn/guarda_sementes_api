@@ -1,6 +1,7 @@
 package br.com.guarda_sementes_api.controller;
 
 import br.com.guarda_sementes_api.service.endereco.EnderecoService;
+import br.com.guarda_sementes_api.service.endereco.dto.EnderecoDadosCompletosDto;
 import br.com.guarda_sementes_api.service.endereco.dto.EnderecoDto;
 import br.com.guarda_sementes_api.service.endereco.form.EnderecoFiltroForm;
 import br.com.guarda_sementes_api.service.endereco.form.EnderecoForm;
@@ -43,8 +44,8 @@ public class EnderecoController {
     @GetMapping()
     @ResponseStatus(code = HttpStatus.OK)
     @Operation(summary = "Listar Endereços do Usuário", description = "Endpoint responsável por listar os endereços do usuário.")
-    @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = EnderecoDto.class)))
-    public Page<EnderecoDto> listarEnderecosDoUsuario(EnderecoFiltroForm filtro, @PageableDefault(size = Integer.MAX_VALUE) Pageable pageable) {
+    @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = EnderecoDadosCompletosDto.class)))
+    public Page<EnderecoDadosCompletosDto> listarEnderecosDoUsuario(EnderecoFiltroForm filtro, @PageableDefault(size = Integer.MAX_VALUE) Pageable pageable) {
         return this.enderecoService.listarEnderecosDoUsuario(filtro, pageable);
     }
 
