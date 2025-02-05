@@ -9,6 +9,7 @@ import br.com.guarda_sementes_api.service.semente.SementeService;
 import br.com.guarda_sementes_api.service.semente.dto.SementeDto;
 import br.com.guarda_sementes_api.service.semente.form.SementeFiltroForm;
 import br.com.guarda_sementes_api.service.semente.form.SementeForm;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +22,7 @@ public class SementeServiceImpl extends BaseService implements SementeService {
     private final ArmazemService armazemService;
 
     @Override
+    @Transactional
     public SementeDto cadastrarOuAtualizarSemente(Long semNrId, SementeForm form) {
         var semente = semNrId != null ?
                 this.sementeRepository.buscarSementePorId(semNrId)
@@ -35,7 +37,6 @@ public class SementeServiceImpl extends BaseService implements SementeService {
         semente.setArmNrId(form.armNrId());
 
         this.sementeRepository.save(semente);
-        System.out.println(semente);
 
         return new SementeDto(semente);
     }
@@ -54,6 +55,7 @@ public class SementeServiceImpl extends BaseService implements SementeService {
     }
 
     @Override
+    @Transactional
     public void deletarSemente(Long semNrId) {
         var semente = this.sementeRepository.buscarSementePorId(semNrId)
                 .orElseThrow(() -> new RegistroNaoEncontradoException("Semente não encontrada"));

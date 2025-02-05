@@ -63,6 +63,7 @@ public class SementeDisponivelTrocaServiceImpl implements SementeDisponivelTroca
     }
 
     @Override
+    @Transactional
     public void deletarSementeDisponivelTroca(Long sdtNrId) {
 
         var sementeDisponivelTroca = this.sementeDisponivelTrocaRepository.buscarSementeDisponivelTrocaPorId(sdtNrId)
@@ -73,6 +74,7 @@ public class SementeDisponivelTrocaServiceImpl implements SementeDisponivelTroca
     }
 
     @Override
+    @Transactional
     public void indisponibilizarSementeParaTroca(Long sdtNrId) {
         var sementeDisponivelTroca = this.sementeDisponivelTrocaRepository.buscarSementeDisponivelTrocaPorId(sdtNrId)
                 .orElseThrow(() -> new RegistroNaoEncontradoException("Semente indisponível para troca."));

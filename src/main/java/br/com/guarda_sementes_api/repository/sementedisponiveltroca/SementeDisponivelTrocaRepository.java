@@ -60,7 +60,9 @@ public interface SementeDisponivelTrocaRepository extends JpaRepository<SementeD
                     inner join
                         est_estado est on est.est_nr_id = cid.est_nr_id
                     where
-                        en.end_bl_endereco_padrao = true and sdt.sdt_bl_disponivel = true
+                        en.end_bl_endereco_padrao = true
+                    and sdt.sdt_bl_disponivel = true
+                    and sem.sem_bl_ativo = true
                     and (:#{#filtro.sdtNrId() == null} or sdt.sdt_nr_id=:#{#filtro.sdtNrId()})
                     and (:#{#filtro.sdtNrQuantidade() == null} or sdt.sdt_nr_quantidade=:#{#filtro.sdtNrQuantidade()})
                     and (:#{#filtro.sdtTxObservacoes() == null} or upper(sdt.sdt_tx_observacoes) like upper(concat('%', coalesce(:#{#filtro.sdtTxObservacoes()}, ''), '%')))
