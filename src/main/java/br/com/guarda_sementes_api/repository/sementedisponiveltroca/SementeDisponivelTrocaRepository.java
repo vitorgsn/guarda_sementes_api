@@ -65,14 +65,16 @@ public interface SementeDisponivelTrocaRepository extends JpaRepository<SementeD
                     and sem.sem_bl_ativo = true
                     and (:#{#filtro.sdtNrId() == null} or sdt.sdt_nr_id=:#{#filtro.sdtNrId()})
                     and (:#{#filtro.sdtNrQuantidade() == null} or sdt.sdt_nr_quantidade=:#{#filtro.sdtNrQuantidade()})
-                    and (:#{#filtro.sdtTxObservacoes() == null} or upper(sdt.sdt_tx_observacoes) like upper(concat('%', coalesce(:#{#filtro.sdtTxObservacoes()}, ''), '%')))
                     and (:#{#filtro.semNrIdSemente() == null} or sdt.sem_nr_id_semente=:#{#filtro.semNrIdSemente()})
-                    and (:#{#filtro.semTxNome() == null} or upper(sem.sem_tx_nome) like upper(concat('%', coalesce(:#{#filtro.semTxNome()}, ''), '%')))
                     and (:#{#filtro.cidNrId() == null} or cid.cid_nr_id=:#{#filtro.cidNrId()})
-                    and (:#{#filtro.cidTxNome() == null} or upper(cid.cid_tx_nome) like upper(concat('%', coalesce(:#{#filtro.cidTxNome()}, ''), '%')))
                     and (:#{#filtro.estNrId() == null} or est.est_nr_id=:#{#filtro.estNrId()})
                     and (:#{#filtro.estTxNome() == null} or upper(est.est_tx_nome) like upper(concat('%', coalesce(:#{#filtro.estTxNome()}, ''), '%')))
                     and (:#{#filtro.estTxSigla() == null} or upper(est.est_tx_sigla) like upper(concat('%', coalesce(:#{#filtro.estTxSigla()}, ''), '%')))
+                    and (
+                            (:#{#filtro.sdtTxObservacoes() == null} or upper(sdt.sdt_tx_observacoes) like upper(concat('%', coalesce(:#{#filtro.sdtTxObservacoes()}, ''), '%')))
+                         or (:#{#filtro.semTxNome() == null} or upper(sem.sem_tx_nome) like upper(concat('%', coalesce(:#{#filtro.semTxNome()}, ''), '%')))   
+                         or (:#{#filtro.cidTxNome() == null} or upper(cid.cid_tx_nome) like upper(concat('%', coalesce(:#{#filtro.cidTxNome()}, ''), '%'))) 
+                        )
                     """)
     Page<SementeDisponivelTrocaDadosCompletos> listarSementesDisponiveisParaTroca(@Param("filtro") SementeDisponivelTrocaFiltroForm filtro, Pageable pageable);
 

@@ -76,6 +76,7 @@ public class EnderecoServiceImpl extends BaseService implements EnderecoService 
     @Override
     public void deletarEndereco(Long endNrId) {
         var endereco = this.enderecoRepository.buscarEnderecoPorId(endNrId).orElseThrow(() -> new RegistroNaoEncontradoException("Endereço não encontrado."));
+        endereco.setEndBlEnderecoPadrao(false);
         endereco.setEndBlAtivo(false);
         this.enderecoRepository.save(endereco);
     }

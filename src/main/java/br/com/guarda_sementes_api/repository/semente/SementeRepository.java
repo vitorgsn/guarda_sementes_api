@@ -34,14 +34,16 @@ public interface SementeRepository extends JpaRepository<SementeEntidade, Long> 
                         sem_semente sem
                     left join
                         amu_armazem_usuario amu on amu.arm_nr_id = sem.arm_nr_id
-                    where 
+                    where
                         sem.sem_bl_ativo = true
                     and amu.usu_nr_id =:usuNrId
                     and (:#{#filtro.semNrId() == null} or sem.sem_nr_id=:#{#filtro.semNrId()})
-                    and (:#{#filtro.semTxNome() == null} or upper(sem.sem_tx_nome) like upper(concat('%', coalesce(:#{#filtro.semTxNome()}, ''), '%')))
                     and (:#{#filtro.semNrQuantidade() == null} or sem.sem_nr_quantidade=:#{#filtro.semNrQuantidade()})
-                    and (:#{#filtro.semTxDescricao() == null} or upper(sem.sem_tx_descricao) like upper(concat('%', coalesce(:#{#filtro.semTxDescricao()}, ''), '%')))
                     and (:#{#filtro.armNrId() == null} or sem.arm_nr_id=:#{#filtro.armNrId()})
+                    and (
+                        (:#{#filtro.semTxDescricao() == null} or upper(sem.sem_tx_descricao) like upper(concat('%', coalesce(:#{#filtro.semTxDescricao()}, ''), '%')))
+                    or  (:#{#filtro.semTxNome() == null} or upper(sem.sem_tx_nome) like upper(concat('%', coalesce(:#{#filtro.semTxNome()}, ''), '%')))
+                        )                                                    
                     """)
     Page<SementeEntidade> listarSementesDoUsuario(@Param("filtro") SementeFiltroForm filtro, Pageable pageable, UUID usuNrId);
 }
