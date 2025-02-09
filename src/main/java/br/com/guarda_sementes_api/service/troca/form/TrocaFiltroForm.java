@@ -4,6 +4,7 @@ import java.util.UUID;
 
 public record TrocaFiltroForm(
         UUID troNrId,
-        String troTxInstruncoes
+        String troTxInstruncoes,
+        String sttTxStatus
 ) {
 }

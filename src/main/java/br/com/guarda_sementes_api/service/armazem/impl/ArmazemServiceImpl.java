@@ -5,7 +5,6 @@ import br.com.guarda_sementes_api.model.armazem.ArmazemEntidade;
 import br.com.guarda_sementes_api.repository.armazem.ArmazemRepository;
 import br.com.guarda_sementes_api.service.BaseService;
 import br.com.guarda_sementes_api.service.armazem.ArmazemService;
-import br.com.guarda_sementes_api.service.armazem.ArmazemUsuarioService;
 import br.com.guarda_sementes_api.service.armazem.CategoriaArmazemService;
 import br.com.guarda_sementes_api.service.armazem.dto.ArmazemDto;
 import br.com.guarda_sementes_api.service.armazem.form.ArmazemFiltroForm;
@@ -21,11 +20,12 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ArmazemServiceImpl extends BaseService implements ArmazemService {
     private final ArmazemRepository armazemRepository;
-    private final ArmazemUsuarioService armazemUsuarioService;
     private final CategoriaArmazemService categoriaArmazemService;
 
     @Override
     public ArmazemDto cadastrarOuAtualizarArmazem(Long armNrId, ArmazemForm form) {
+        var usuarioAutenticado = this.getUsuarioAutenticado();
+
         var armazem = armNrId != null ?
                 this.armazemRepository.buscarArmazemPorId(armNrId)
                         .orElseThrow(() -> new RegistroNaoEncontradoException("Armazem não encontrado")
@@ -35,12 +35,9 @@ public class ArmazemServiceImpl extends BaseService implements ArmazemService {
 
         armazem.setArmTxDescricao(form.armTxDescricao());
         armazem.setCtaNrId(form.ctaNrId());
+        armazem.setUsuNrId(usuarioAutenticado.getUsuNrId());
 
         this.armazemRepository.save(armazem);
-
-        var usuarioAutenticado = this.getUsuarioAutenticado();
-
-        this.armazemUsuarioService.cadastrarOuAtualizarArmazemUsuario(armazem.getArmNrId(), usuarioAutenticado.getUsuNrId());
 
         return new ArmazemDto(armazem);
     }
@@ -72,10 +69,9 @@ public class ArmazemServiceImpl extends BaseService implements ArmazemService {
 
         novoArmazem.setArmTxDescricao(form.armTxDescricao());
         novoArmazem.setCtaNrId(form.ctaNrId());
+        novoArmazem.setUsuNrId(usuNrId);
 
         this.armazemRepository.save(novoArmazem);
-
-        this.armazemUsuarioService.cadastrarOuAtualizarArmazemUsuario(novoArmazem.getArmNrId(), usuNrId);
 
         return new ArmazemDto(novoArmazem);
     }

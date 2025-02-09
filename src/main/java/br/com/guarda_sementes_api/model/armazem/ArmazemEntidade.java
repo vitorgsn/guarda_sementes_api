@@ -8,6 +8,7 @@ import org.hibernate.proxy.HibernateProxy;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.UUID;
 
 @ToString
 @Entity
@@ -37,6 +38,9 @@ public class ArmazemEntidade {
 
     @Column(name = "cta_nr_id")
     private Long ctaNrId;
+
+    @Column(name = "usu_nr_id")
+    private UUID usuNrId;
 
     @Column(name = "arm_bl_ativo")
     @Builder.Default

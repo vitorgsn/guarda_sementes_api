@@ -31,8 +31,20 @@ public class TrocaEntidade {
     @Column(name = "usu_nr_id_remetente")
     private UUID usuNrIdRemetente;
 
+    @Column(name = "sem_nr_id_semente_remetente")
+    private Long semNrIdSementeRemetente;
+
+    @Column(name = "tro_nr_quantidade_semente_remetente")
+    private Float troNrQuantidadeSementeRemetente;
+
     @Column(name = "usu_nr_id_destinatario")
     private UUID usuNrIdDestinatario;
+
+    @Column(name = "sem_nr_id_semente_destinatario")
+    private Long semNrIdSementeDestinatario;
+
+    @Column(name = "tro_nr_quantidade_semente_destinatario")
+    private Float troNrQuantidadeSementeDestinatario;
 
     @CreationTimestamp
     @Column(name = "tro_dt_created_at")

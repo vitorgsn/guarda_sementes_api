@@ -7,20 +7,26 @@ import java.util.UUID;
 
 public record TrocaDto(
         UUID troNrId,
-        String troTxInstruncoes,
-        UUID usuNrIdRemetente,
-        UUID usuNrIdDestinatario,
+        String troTxInstrucoes,
         LocalDateTime troDtCreatedAt,
-        LocalDateTime troDtUpdateAt
+        UUID usuNrIdRemetente,
+        Long semNrIdSementeRemetente,
+        Float troNrQuantidadeSementeRemetente,
+        UUID usuNrIdDestinatario,
+        Long semNrIdSementeDestinatario,
+        Float troNrQuantidadeSementeDestinatario
 ) {
     public TrocaDto (TrocaEntidade entidade) {
         this(
                 entidade.getTroNrId(),
                 entidade.getTroTxInstruncoes(),
-                entidade.getUsuNrIdRemetente(),
-                entidade.getUsuNrIdDestinatario(),
                 entidade.getTroDtCreatedAt(),
-                entidade.getTroDtUpdateAt()
+                entidade.getUsuNrIdRemetente(),
+                entidade.getSemNrIdSementeRemetente(),
+                entidade.getTroNrQuantidadeSementeRemetente(),
+                entidade.getUsuNrIdDestinatario(),
+                entidade.getSemNrIdSementeDestinatario(),
+                entidade.getTroNrQuantidadeSementeDestinatario()
         );
     }
 }

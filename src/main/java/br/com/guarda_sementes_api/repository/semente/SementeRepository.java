@@ -33,10 +33,10 @@ public interface SementeRepository extends JpaRepository<SementeEntidade, Long> 
                     from 
                         sem_semente sem
                     left join
-                        amu_armazem_usuario amu on amu.arm_nr_id = sem.arm_nr_id
+                        arm_armazem arm on arm.arm_nr_id = sem.arm_nr_id
                     where
                         sem.sem_bl_ativo = true
-                    and amu.usu_nr_id =:usuNrId
+                    and arm.usu_nr_id =:usuNrId
                     and (:#{#filtro.semNrId() == null} or sem.sem_nr_id=:#{#filtro.semNrId()})
                     and (:#{#filtro.semNrQuantidade() == null} or sem.sem_nr_quantidade=:#{#filtro.semNrQuantidade()})
                     and (:#{#filtro.armNrId() == null} or sem.arm_nr_id=:#{#filtro.armNrId()})

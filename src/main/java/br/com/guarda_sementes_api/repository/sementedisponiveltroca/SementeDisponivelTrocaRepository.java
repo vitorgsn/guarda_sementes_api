@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 public interface SementeDisponivelTrocaRepository extends JpaRepository<SementeDisponivelTrocaEntidade, Long> {
@@ -49,9 +50,7 @@ public interface SementeDisponivelTrocaRepository extends JpaRepository<SementeD
                     inner join
                         arm_armazem arm on arm.arm_nr_id = sem.arm_nr_id
                     inner join
-                        amu_armazem_usuario amu on amu.arm_nr_id = arm.arm_nr_id
-                    inner join
-                        usu_usuario usu on usu.usu_nr_id = amu.usu_nr_id
+                        usu_usuario usu on usu.usu_nr_id = arm.usu_nr_id
                     inner join
                         enu_endereco_usuario enu on enu.usu_nr_id = usu.usu_nr_id
                     inner join
@@ -64,6 +63,7 @@ public interface SementeDisponivelTrocaRepository extends JpaRepository<SementeD
                         en.end_bl_endereco_padrao = true
                     and sdt.sdt_bl_disponivel = true
                     and sem.sem_bl_ativo = true
+                    and usu.usu_nr_id != :usuNrId
                     and (:#{#filtro.sdtNrId() == null} or sdt.sdt_nr_id=:#{#filtro.sdtNrId()})
                     and (:#{#filtro.sdtNrQuantidade() == null} or sdt.sdt_nr_quantidade=:#{#filtro.sdtNrQuantidade()})
                     and (:#{#filtro.semNrIdSemente() == null} or sdt.sem_nr_id_semente=:#{#filtro.semNrIdSemente()})
@@ -77,7 +77,7 @@ public interface SementeDisponivelTrocaRepository extends JpaRepository<SementeD
                          or (:#{#filtro.cidTxNome() == null} or upper(cid.cid_tx_nome) like upper(concat('%', coalesce(:#{#filtro.cidTxNome()}, ''), '%'))) 
                         )
                     """)
-    Page<SementeDisponivelTrocaDadosCompletos> listarSementesDisponiveisParaTroca(@Param("filtro") SementeDisponivelTrocaFiltroForm filtro, Pageable pageable);
+    Page<SementeDisponivelTrocaDadosCompletos> listarSementesDisponiveisParaTroca(@Param("filtro") SementeDisponivelTrocaFiltroForm filtro, Pageable pageable, UUID usuNrId);
 
     @Query(nativeQuery = true,
             value = """

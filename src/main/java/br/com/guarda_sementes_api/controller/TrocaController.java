@@ -1,7 +1,7 @@
 package br.com.guarda_sementes_api.controller;
 
 import br.com.guarda_sementes_api.service.troca.TrocaService;
-import br.com.guarda_sementes_api.service.troca.dto.TrocaComStatusDto;
+import br.com.guarda_sementes_api.service.troca.dto.TrocaDadosCompletosDto;
 import br.com.guarda_sementes_api.service.troca.dto.TrocaDto;
 import br.com.guarda_sementes_api.service.troca.form.TrocaFiltroForm;
 import br.com.guarda_sementes_api.service.troca.form.TrocaForm;
@@ -45,6 +45,15 @@ public class TrocaController {
 
     @GetMapping()
     @ResponseStatus(code = HttpStatus.OK)
+    @Operation(summary = "Listar Trocas do Usuário", description = "Endpoint responsável por listar as trocas do usuário.")
+    @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = TrocaDadosCompletosDto.class)))
+    public Page<TrocaDadosCompletosDto> listarTrocas(TrocaFiltroForm filtro, @PageableDefault(size = Integer.MAX_VALUE) Pageable pageable) {
+        return this.trocaService.listarTrocasDoUsuario(filtro, pageable);
+    }
+
+    /*
+    @GetMapping()
+    @ResponseStatus(code = HttpStatus.OK)
     @Operation(summary = "Listar Trocas abertas pelo Usuário", description = "Endpoint responsável por listar as trocas abertas pelo usuário.")
     @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = TrocaDto.class)))
     public Page<TrocaComStatusDto> listarTrocasDoUsuarioRemetente(TrocaFiltroForm filtro, @PageableDefault(size = Integer.MAX_VALUE) Pageable pageable) {
@@ -58,6 +67,7 @@ public class TrocaController {
     public Page<TrocaComStatusDto> listarTrocasDoUsuarioDestinatario(TrocaFiltroForm filtro, @PageableDefault(size = Integer.MAX_VALUE) Pageable pageable) {
         return this.trocaService.listarTrocasDoUsuarioDestinatario(filtro, pageable);
     }
+    */
 
     @GetMapping("/{troNrId}")
     @ResponseStatus(code = HttpStatus.OK)
@@ -65,14 +75,6 @@ public class TrocaController {
     @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = TrocaDto.class)))
     public TrocaDto obterTrocaPorId(@PathVariable @Valid UUID troNrId) {
         return this.trocaService.obterTrocaPorId(troNrId);
-    }
-
-    @DeleteMapping("/{troNrId}")
-    @ResponseStatus(code = HttpStatus.NO_CONTENT)
-    @Operation(summary = "Deletar uma Troca", description = "Endpoint responsável por deletar uma troca.")
-    @ApiResponse(responseCode = "204", description = "NO CONTENT")
-    public void deletarTroca(@PathVariable @Valid UUID troNrId) {
-        this.trocaService.deletarTroca(troNrId);
     }
 
     @PostMapping("/{troNrId}/aceitar")

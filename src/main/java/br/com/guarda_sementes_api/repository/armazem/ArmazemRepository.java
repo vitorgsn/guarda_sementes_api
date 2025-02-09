@@ -32,11 +32,9 @@ public interface ArmazemRepository extends JpaRepository<ArmazemEntidade, Long> 
                         arm.* 
                     from 
                         arm_armazem arm
-                    left join
-                        amu_armazem_usuario amu on amu.arm_nr_id = arm.arm_nr_id
                     where 
                         arm.arm_bl_ativo = true
-                    and amu.usu_nr_id =:usuNrId
+                    and arm.usu_nr_id =:usuNrId
                     and (:#{#filtro.armNrId() == null} or arm.arm_nr_id=:#{#filtro.armNrId()})
                     and (:#{#filtro.armTxDescricao() == null} or upper(arm.arm_tx_descricao) like upper(concat('%', coalesce(:#{#filtro.armTxDescricao()}, ''), '%')))
                     and (:#{#filtro.ctaNrId() == null} or arm.cta_nr_id=:#{#filtro.ctaNrId()})

@@ -4,6 +4,7 @@ import br.com.guarda_sementes_api.exceptions.EstoqueInsuficienteException;
 import br.com.guarda_sementes_api.exceptions.RegistroNaoEncontradoException;
 import br.com.guarda_sementes_api.model.sementedisponiveltroca.SementeDisponivelTrocaEntidade;
 import br.com.guarda_sementes_api.repository.sementedisponiveltroca.SementeDisponivelTrocaRepository;
+import br.com.guarda_sementes_api.service.BaseService;
 import br.com.guarda_sementes_api.service.sementedisponiveltroca.SementeDisponivelTrocaService;
 import br.com.guarda_sementes_api.service.sementedisponiveltroca.dto.SementeDisponivelTrocaDadosCompletosDto;
 import br.com.guarda_sementes_api.service.sementedisponiveltroca.dto.SementeDisponivelTrocaDto;
@@ -18,7 +19,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class SementeDisponivelTrocaServiceImpl implements SementeDisponivelTrocaService {
+public class SementeDisponivelTrocaServiceImpl extends BaseService implements SementeDisponivelTrocaService {
     private final SementeDisponivelTrocaRepository sementeDisponivelTrocaRepository;
     private final SementeService sementeService;
 
@@ -50,7 +51,8 @@ public class SementeDisponivelTrocaServiceImpl implements SementeDisponivelTroca
 
     @Override
     public Page<SementeDisponivelTrocaDadosCompletosDto> listarSementesDisponiveisParaTroca(SementeDisponivelTrocaFiltroForm filtro, Pageable pageable) {
-        return this.sementeDisponivelTrocaRepository.listarSementesDisponiveisParaTroca(filtro, pageable).map(SementeDisponivelTrocaDadosCompletosDto::new);
+        var usuarioAutenticado = this.getUsuarioAutenticado();
+        return this.sementeDisponivelTrocaRepository.listarSementesDisponiveisParaTroca(filtro, pageable, usuarioAutenticado.getUsuNrId()).map(SementeDisponivelTrocaDadosCompletosDto::new);
     }
 
     @Override
