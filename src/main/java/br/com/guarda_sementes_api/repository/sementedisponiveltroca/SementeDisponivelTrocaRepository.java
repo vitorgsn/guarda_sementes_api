@@ -34,6 +34,7 @@ public interface SementeDisponivelTrocaRepository extends JpaRepository<SementeD
                         sdt.sdt_tx_observacoes as "sdtTxObservacoes",
                         sem.sem_nr_id as "semNrIdSemente",
                         sem.sem_tx_nome as "semTxNome",
+                        usu.usu_nr_id as "usuNrId",
                         cid.cid_nr_id as "cidNrId",
                         cid.cid_tx_nome as "cidTxNome",
                         est.est_nr_id as "estNrId",

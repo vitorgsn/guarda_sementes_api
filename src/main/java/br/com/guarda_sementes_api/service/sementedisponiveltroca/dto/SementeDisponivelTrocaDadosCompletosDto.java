@@ -1,6 +1,7 @@
 package br.com.guarda_sementes_api.service.sementedisponiveltroca.dto;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public record SementeDisponivelTrocaDadosCompletosDto(
         Long sdtNrId,
@@ -9,6 +10,7 @@ public record SementeDisponivelTrocaDadosCompletosDto(
         String sdtTxObservacoes,
         Long semNrIdSemente,
         String semTxNome,
+        UUID usuNrId,
         Long cidNrId,
         String cidTxNome,
         Long estNrId,
@@ -25,6 +27,7 @@ public record SementeDisponivelTrocaDadosCompletosDto(
                 semente.getSdtTxObservacoes(),
                 semente.getSemNrIdSemente(),
                 semente.getSemTxNome(),
+                semente.getUsuNrId(),
                 semente.getCidNrId(),
                 semente.getCidTxNome(),
                 semente.getEstNrId(),

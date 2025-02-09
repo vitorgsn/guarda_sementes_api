@@ -1,6 +1,7 @@
 package br.com.guarda_sementes_api.service.sementedisponiveltroca.dto;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public interface SementeDisponivelTrocaDadosCompletos {
     Long getSdtNrId();
@@ -9,6 +10,7 @@ public interface SementeDisponivelTrocaDadosCompletos {
     String getSdtTxObservacoes();
     Long getSemNrIdSemente();
     String getSemTxNome();
+    UUID getUsuNrId();
     Long getCidNrId();
     String getCidTxNome();
     Long getEstNrId();
