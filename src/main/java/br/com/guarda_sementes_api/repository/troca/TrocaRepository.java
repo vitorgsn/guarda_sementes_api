@@ -91,11 +91,13 @@ public interface TrocaRepository extends JpaRepository<TrocaEntidade, Long> {
                     	tro.tro_dt_created_at as "troDtCreatedAt",
                     	tro.usu_nr_id_remetente as "usuNrIdRemetente",
                     	remetente.usu_tx_nome as "usuTxNomeRemetente",
+                        con_remetente.con_tx_numero as "conTxNumeroRemetente",
                     	tro.sem_nr_id_semente_remetente as "semNrIdSementeRemetente",
                     	semente_remetente.sem_tx_nome as "semTxNomeRemetente",
                     	tro.tro_nr_quantidade_semente_remetente as "troNrQuantidadeSementeRemetente",
                     	tro.usu_nr_id_destinatario as "usuNrIdDestinatario",
                     	destinatario.usu_tx_nome as "usuTxNomeDestinatario",
+                        con_destinatario.con_tx_numero as "conTxNumeroDestinatario",
                     	tro.sem_nr_id_semente_destinatario as "semNrIdSementeDestinatario",
                     	semente_destinatario.sem_tx_nome as "semTxNomeDestinatario",
                     	tro.tro_nr_quantidade_semente_destinatario as "troNrQuantidadeSementeDestinatario"
@@ -107,12 +109,22 @@ public interface TrocaRepository extends JpaRepository<TrocaEntidade, Long> {
                     	public.usu_usuario remetente on remetente.usu_nr_id = tro.usu_nr_id_remetente
                     left join
                     	public.usu_usuario destinatario on destinatario.usu_nr_id = tro.usu_nr_id_destinatario
+                    left join
+                        public.cou_contato_usuario cou_remetente on cou_remetente.usu_nr_id = remetente.usu_nr_id
+                    left join
+                        public.con_contato con_remetente on con_remetente.con_nr_id = cou_remetente.con_nr_id
+                    left join
+                        public.cou_contato_usuario cou_destinatario on cou_destinatario.usu_nr_id = destinatario.usu_nr_id
+                    left join
+                        public.con_contato con_destinatario on con_destinatario.con_nr_id = cou_destinatario.con_nr_id
                    	left join
                    		public.sem_semente semente_remetente on semente_remetente.sem_nr_id = tro.sem_nr_id_semente_remetente
                    	left join
                    		public.sem_semente semente_destinatario on semente_destinatario.sem_nr_id = tro.sem_nr_id_semente_destinatario
                     where
-                    	stt.stt_dt_status_troca = (
+                            con_remetente.con_bl_contato_padrao = true
+                        and con_destinatario.con_bl_contato_padrao = true
+                    	and stt.stt_dt_status_troca = (
                             select max(sub_stt.stt_dt_status_troca)
                             from public.stt_status_troca sub_stt
                             where sub_stt.tro_nr_id_troca = tro.tro_nr_id

@@ -26,6 +26,10 @@ public class ApplicationControllerAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handleInsufficientStockException(EstoqueInsuficienteException ex) {return ex.getMessage();}
 
+    @ExceptionHandler(RestricaoPorRegraDeNegocioException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String handleRestricaoPorRegraDeNegocioException(RestricaoPorRegraDeNegocioException ex) {return ex.getMessage();}
+
     @ExceptionHandler(StatusNaoEncontradoException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public String handleStatusNotFoundException(StatusNaoEncontradoException ex) {return ex.getMessage();}

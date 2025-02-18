@@ -1,6 +1,7 @@
 package br.com.guarda_sementes_api.service.endereco.impl;
 
 import br.com.guarda_sementes_api.exceptions.RegistroNaoEncontradoException;
+import br.com.guarda_sementes_api.exceptions.RestricaoPorRegraDeNegocioException;
 import br.com.guarda_sementes_api.model.endereco.EnderecoEntidade;
 import br.com.guarda_sementes_api.repository.endereco.EnderecoRepository;
 import br.com.guarda_sementes_api.service.BaseService;
@@ -38,18 +39,21 @@ public class EnderecoServiceImpl extends BaseService implements EnderecoService 
         endereco.setCidNrId(form.cidNrId());
 
         var usuarioAutenticado = this.getUsuarioAutenticado();
+        var enderecoPadrao = this.enderecoRepository.buscarEnderecoPadrao(usuarioAutenticado.getUsuNrId());
 
-        if (form.endBlEnderecoPadrao()) {
-            var enderecoPadrao = this.enderecoRepository.buscarEnderecoPadrao(usuarioAutenticado.getUsuNrId());
-
+        if (!form.endBlEnderecoPadrao()) {
+            if (enderecoPadrao.isEmpty()) {
+                endereco.setEndBlEnderecoPadrao(true);
+            } else {
+                endereco.setEndBlEnderecoPadrao(false);
+            }
+        } else {
             if (enderecoPadrao.isPresent()) {
                 enderecoPadrao.get().setEndBlEnderecoPadrao(false);
                 this.enderecoRepository.save(enderecoPadrao.get());
             }
 
             endereco.setEndBlEnderecoPadrao(true);
-        } else {
-            endereco.setEndBlEnderecoPadrao(false);
         }
 
         this.enderecoRepository.save(endereco);
@@ -74,8 +78,23 @@ public class EnderecoServiceImpl extends BaseService implements EnderecoService 
     }
 
     @Override
+    @Transactional
     public void deletarEndereco(Long endNrId) {
         var endereco = this.enderecoRepository.buscarEnderecoPorId(endNrId).orElseThrow(() -> new RegistroNaoEncontradoException("Endereço não encontrado."));
+        var enderecos = this.enderecoRepository.listarEnderecos(this.getUsuarioAutenticado().getUsuNrId());
+
+        if (enderecos.size() < 2) {
+            throw new RestricaoPorRegraDeNegocioException("Não foi possível deletar o endereço, pois ele é seu único endereço.");
+        }
+
+        if (endereco.getEndBlEnderecoPadrao()) {
+            if (!enderecos.isEmpty()) {
+                var primeiroEndereco = enderecos.getFirst();
+                primeiroEndereco.setEndBlEnderecoPadrao(true);
+                this.enderecoRepository.save(primeiroEndereco);
+            }
+        }
+
         endereco.setEndBlEnderecoPadrao(false);
         endereco.setEndBlAtivo(false);
         this.enderecoRepository.save(endereco);

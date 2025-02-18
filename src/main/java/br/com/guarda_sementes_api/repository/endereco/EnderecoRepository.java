@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -79,4 +80,18 @@ public interface EnderecoRepository extends JpaRepository<EnderecoEntidade, Long
                     and ende.end_bl_endereco_padrao = true
                     """)
     Optional<EnderecoEntidade> buscarEnderecoPadrao(UUID usuNrId);
+
+    @Query(nativeQuery = true,
+            value = """
+                    select
+                        ende.*
+                    from
+                        end_endereco ende
+                    left join
+                        enu_endereco_usuario enu on enu.end_nr_id = ende.end_nr_id
+                    where
+                        ende.end_bl_ativo = true
+                    and enu.usu_nr_id =:usuNrId
+                    """)
+    List<EnderecoEntidade> listarEnderecos(UUID usuNrId);
 }

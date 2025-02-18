@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -41,4 +42,33 @@ public interface ContatoRepository extends JpaRepository<ContatoEntidade, Long> 
                     and (:#{#filtro.conTxNumero() == null} or upper(con.con_tx_numero) like upper(concat('%', coalesce(:#{#filtro.conTxNumero()}, ''), '%')))
                     """)
     Page<ContatoEntidade> listarContatosDoUsuario(@Param("filtro")ContatoFiltroForm filtro, Pageable pageable, UUID usuNrId);
+
+    @Query(nativeQuery = true,
+            value = """
+                    select
+                        con.*
+                    from
+                        con_contato con
+                    left join
+                        cou_contato_usuario cou on cou.con_nr_id = con.con_nr_id
+                    where
+                        con.con_bl_ativo = true
+                    and cou.usu_nr_id =:usuNrId
+                    and con.con_bl_contato_padrao = true
+                    """)
+    Optional<ContatoEntidade> buscarContatoPadrao(UUID usuNrId);
+
+    @Query(nativeQuery = true,
+            value = """
+                    select
+                        con.*
+                    from
+                        con_contato con
+                    left join
+                        cou_contato_usuario cou on cou.con_nr_id = con.con_nr_id
+                    where
+                        con.con_bl_ativo = true
+                    and cou.usu_nr_id =:usuNrId
+                    """)
+    List<ContatoEntidade> listarContatos(UUID usuNrId);
 }

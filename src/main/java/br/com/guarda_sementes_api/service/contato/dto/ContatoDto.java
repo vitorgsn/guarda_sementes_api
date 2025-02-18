@@ -9,7 +9,8 @@ public record ContatoDto(
         String conTxEmail,
         String conTxNumero,
         LocalDateTime conDtCreatedAt,
-        LocalDateTime conDtUpdateAt
+        LocalDateTime conDtUpdateAt,
+        Boolean conBlContatoPadrao
 ) {
     public ContatoDto (ContatoEntidade contato) {
         this(
@@ -17,7 +18,8 @@ public record ContatoDto(
                 contato.getConTxEmail(),
                 contato.getConTxNumero(),
                 contato.getConDtCreatedAt(),
-                contato.getConDtUpdateAt()
+                contato.getConDtUpdateAt(),
+                contato.getConBlContatoPadrao()
         );
     }
 }

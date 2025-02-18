@@ -7,6 +7,7 @@ public record ContatoForm(
         @NotBlank(message = "Por favor, informe um email de contato") @Email
         String conTxEmail,
         @NotBlank(message = "Por favor, informe um número de contato")
-        String conTxNumero
+        String conTxNumero,
+        Boolean conBlContatoPadrao
 ) {
 }

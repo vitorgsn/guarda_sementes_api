@@ -16,11 +16,13 @@ public interface TrocaDadosCompletos {
     LocalDateTime getTroDtCreatedAt();
     UUID getUsuNrIdRemetente();
     String getUsuTxNomeRemetente();
+    String getConTxNumeroRemetente();
     Long getSemNrIdSementeRemetente();
     String getSemTxNomeRemetente();
     Float getTroNrQuantidadeSementeRemetente();
     UUID getUsuNrIdDestinatario();
     String getUsuTxNomeDestinatario();
+    String getConTxNumeroDestinatario();
     Long getSemNrIdSementeDestinatario();
     String getSemTxNomeDestinatario();
     Float getTroNrQuantidadeSementeDestinatario();

@@ -10,6 +10,7 @@ public record EnderecoFiltroForm(
         String cidTxNome,
         Long estNrId,
         String estTxNome,
-        String estTxSigla
+        String estTxSigla,
+        Boolean endBlEnderecoPadrao
 ) {
 }

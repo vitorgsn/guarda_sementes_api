@@ -41,6 +41,9 @@ public class ContatoEntidade {
     @Builder.Default
     private Boolean conBlAtivo = true;
 
+    @Column(name = "con_bl_contato_padrao")
+    private Boolean conBlContatoPadrao;
+
     @Override
     public final boolean equals(Object o) {
         if (this == o) return true;
